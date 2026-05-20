@@ -1,0 +1,34 @@
+# .htaccess — Configurazione Apache per gd-events.it
+# -----------------------------------------------
+# ATTENZIONE: modificare solo se si cambia dominio o struttura routing.
+# Le regole sono ordinate per priorità — ogni RewriteRule con [L] interrompe
+# il processing e rimanda la richiesta all'inizio del modulo Rewrite.
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+  RewriteBase /
+
+  # ── 1. Forza HTTPS ─────────────────────────────────────────────────────────
+  # Redirige tutto il traffico HTTP verso HTTPS (301 permanente).
+  # SEO: Google preferisce HTTPS; evita contenuto duplicato HTTP/HTTPS.
+  RewriteCond %{HTTPS} off
+  RewriteRule ^(.*)$ https://%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # ── 2. Forza www ───────────────────────────────────────────────────────────
+  # Redirige il dominio senza www verso www.gd-events.it (301 permanente).
+  # [NC] = case-insensitive. Canonical URL del sito: https://www.gd-events.it/
+  # SEO: elimina contenuto duplicato www / non-www.
+  RewriteCond %{HTTP_HOST} !^www\. [NC]
+  RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
+
+  # ── 3. SPA fallback ────────────────────────────────────────────────────────
+  # Serve /index.html per qualsiasi URL che non corrisponde a un file
+  # o directory esistente — Next.js gestisce il routing lato client.
+  # index.html stesso è escluso dal redirect per evitare loop infiniti.
+  RewriteRule ^index\.html$ - [L]
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-l
+  RewriteRule . /index.html [L]
+
+</IfModule>

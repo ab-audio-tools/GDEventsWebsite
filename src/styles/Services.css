@@ -1,0 +1,128 @@
+#services {
+  background: #060c1f;
+  padding: 100px 60px;
+  position: relative;
+}
+
+.services-heading {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 4rem;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 80px;
+}
+
+.services-content {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 40px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.service {
+  background: transparent;
+  border: none;
+  border-radius: 20px;
+  padding: 40px 30px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  transition: all 0.4s ease;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+
+
+
+.service-img {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  z-index: 1;
+}
+
+.service-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  transition: all 0.4s ease;
+}
+
+.lightbulb-glow {
+  filter: brightness(0) invert(1) drop-shadow(0 0 20px rgba(0, 212, 255, 0.8)) !important;
+  animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+  0%, 100% {
+    filter: brightness(0) invert(1) drop-shadow(0 0 20px rgba(0, 212, 255, 0.8));
+  }
+  50% {
+    filter: brightness(0) invert(1) drop-shadow(0 0 40px rgba(0, 212, 255, 1));
+  }
+}
+
+
+
+.service-description {
+  position: relative;
+  z-index: 1;
+}
+
+.service-description h2 {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 2.5rem;
+  color: #00d4ff;
+  margin-bottom: 15px;
+  font-weight: 700;
+}
+
+.service-description p {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: 1.6;
+}
+
+@media (max-width: 768px) {
+  #services {
+    padding: 60px 20px;
+  }
+
+  .services-heading {
+    font-size: 2.2rem;
+    margin-bottom: 40px;
+  }
+
+  .services-content {
+    gap: 25px;
+    grid-template-columns: 1fr;
+  }
+
+  .service {
+    padding: 25px 20px;
+  }
+
+  .service-img {
+    width: 80px;
+    height: 80px;
+    margin-bottom: 20px;
+  }
+
+  .service-description h2 {
+    font-size: 1.8rem;
+    margin-bottom: 12px;
+  }
+
+  .service-description p {
+    font-size: 0.9rem;
+  }
+}

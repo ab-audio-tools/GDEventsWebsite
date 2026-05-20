@@ -1,0 +1,37 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm install *)",
+      "Bash(node -e \"const p = require\\('./package.json'\\); console.log\\(p.dependencies['react-helmet-async']\\)\")",
+      "Bash(npm run *)",
+      "Bash(npm uninstall *)",
+      "Bash(node -e \"const p=require\\('./package.json'\\); console.log\\('next:', p.dependencies.next\\); console.log\\('vite:', p.devDependencies?.vite || p.dependencies?.vite || 'RIMOSSO'\\)\")",
+      "Bash(Remove-Item \"C:\\\\Users\\\\bisho\\\\Desktop\\\\GD events React cursor\\\\.claude\\\\worktrees\\\\nice-lovelace-b99dcc\\\\vite.config.js\")",
+      "Bash(git add *)",
+      "Bash(git reset *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git config *)",
+      "Bash(mkdir -p 'C:\\\\Users\\\\bisho\\\\Desktop\\\\GD events React cursor BACKUP pre-nextjs')",
+      "Bash(rsync -a --exclude=node_modules --exclude=www --exclude=.next 'C:\\\\Users\\\\bisho\\\\Desktop\\\\GD events React cursor\\\\.claude\\\\worktrees\\\\nice-lovelace-b99dcc/' 'C:\\\\Users\\\\bisho\\\\Desktop\\\\GD events React cursor BACKUP pre-nextjs/')",
+      "Read(//c/Users/bisho/Desktop/**)",
+      "Bash(node -e \"const {servicesData} = require\\('./src/data/servicesData.js'\\); console.log\\(servicesData.map\\(s=>s.slug\\).join\\(', '\\)\\)\")",
+      "Bash(npx serve *)",
+      "Bash(node -e ' *)",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(powershell -Command \"Compress-Archive -Path '.\\\\out\\\\*' -DestinationPath 'C:\\\\Users\\\\bisho\\\\Desktop\\\\gd-events-build.zip' -Force\")",
+      "Bash(rm -f /mnt/c/Users/bisho/Desktop/gd-events-build-final.zip)",
+      "Read(//mnt/c/Users/bisho/Desktop/GD events React cursor/.claude/worktrees/nice-lovelace-b99dcc/**)",
+      "Bash(zip -r /mnt/c/Users/bisho/Desktop/gd-events-build-final.zip . -q)",
+      "Read(//mnt/c/Users/bisho/**)",
+      "Bash(unzip -p gd-events-build-final.zip)",
+      "Bash(pip show *)",
+      "Bash(FILTER_REPO=\"C:\\\\Users\\\\bisho\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python313\\\\Scripts\\\\git-filter-repo.exe\" *)",
+      "Bash('C:\\\\Users\\\\bisho\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python313\\\\Scripts\\\\git-filter-repo.exe' --string-replace Daniele15! REDACTED --force)",
+      "Bash('C:\\\\Users\\\\bisho\\\\AppData\\\\Local\\\\Packages\\\\PythonSoftwareFoundation.Python.3.13_qbz5n2kfra8p0\\\\LocalCache\\\\local-packages\\\\Python313\\\\Scripts\\\\git-filter-repo.exe' --replace-text replacements.txt --force)",
+      "Bash(ls \"C:\\\\Users\\\\bisho\\\\AppData\\\\Local\\\\Temp\" | grep -i png | head -10 2>/dev/null || \\\\ *)",
+      "Bash(ls -t \"C:\\\\Users\\\\bisho\\\\Downloads\" | head -10 *)",
+      "Bash(python3 -c \"from PIL import Image; print\\('Pillow OK'\\)\")",
+      "Bash(python -c \"from PIL import Image; print\\('Pillow OK'\\)\")"
+    ]
+  }
+}

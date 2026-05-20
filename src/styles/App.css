@@ -1,0 +1,7 @@
+/* App.css - Stili globali applicazione */
+
+#all {
+  width: 100%;
+  min-height: 100vh;
+  /* overflow-x: hidden; rimosso perché blocca position: sticky */
+}
