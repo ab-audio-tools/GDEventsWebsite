@@ -1,0 +1,26 @@
+#loader {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  height: 100vh;
+  width: 100vw;
+  position: fixed;
+  z-index: 100;
+  font-family: 'Space Grotesk', sans-serif;
+  background-color: #060c1f;
+  color: #ffffff;
+  font-size: 70px;
+  font-weight: 700;
+}
+
+#loader .color {
+  color: #00d4ff;
+  text-shadow: 0 0 30px rgba(0, 212, 255, 0.8);
+}
+
+@media (max-width: 768px) {
+  #loader {
+    font-size: 50px;
+  }
+}

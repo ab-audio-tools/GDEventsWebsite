@@ -1,0 +1,345 @@
+#navigation-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 999;
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+  box-shadow: none;
+  transition: all 0.4s ease;
+}
+
+#navigation-bar.scrolled {
+  background: transparent;
+  backdrop-filter: none;
+  border: none;
+}
+
+.nav-container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  /* max-width: 1400px; */
+  margin: 0 0;
+  padding: 20px 55px 25px;
+  width: 100%;
+  position: sticky;
+  top: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 12, 31, 0.98) 0%,
+    rgba(6, 12, 31, 0.95) 70%,
+    rgba(6, 12, 31, 0.7) 90%,
+    rgba(6, 12, 31, 0.3) 100%
+  );
+  border-radius: 0 0 24px 24px;
+  overflow: visible;
+  z-index: 999;
+  /*box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5);*/
+}
+
+.nav-col {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.nav-col-3 {
+  flex: 1.5;
+}
+
+.menu-link {
+  color: #ffffff;
+  text-decoration: none;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  position: relative;
+  padding: 5px 0;
+  transition: all 0.3s ease;
+}
+
+.menu-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) scaleX(0);
+  width: 100%;
+  height: 2px;
+  background: #00d4ff;
+  transition: transform 0.3s ease;
+}
+
+.menu-link:hover::after {
+  transform: translateX(-50%) scaleX(1);
+}
+
+.logo-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.nav-logo {
+  height: 48px;
+  width: auto;
+  filter: brightness(0) invert(1) drop-shadow(0 0 8px rgba(0, 212, 255, 0.4));
+  transition: all 0.3s ease;
+  position: relative;
+  z-index: 10;
+}
+
+.logo-center:hover .nav-logo {
+  filter: brightness(0) invert(1) drop-shadow(0 0 25px rgba(0, 212, 255, 0.8));
+}
+
+/* Navigation Toggle Button */
+#navigation-button {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  width: 50px;
+  height: 50px;
+  background: rgba(6, 12, 31, 0.9);
+  border: 2px solid rgba(0, 212, 255, 0.3);
+  border-radius: 12px;
+  cursor: pointer;
+  z-index: 1000;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+#navigation-button.open {
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.95);
+  transition: opacity 0.15s ease, transform 0.15s ease;
+}
+
+#navigation-button.scrolled {
+  background: rgba(6, 12, 31, 0.95);
+  border-color: rgba(0, 212, 255, 0.5);
+  box-shadow: 0 4px 20px rgba(0, 212, 255, 0.2);
+}
+
+.navigation-icon {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 24px;
+}
+
+.navigation-icon-line {
+  width: 100%;
+  height: 2px;
+  background: #00d4ff;
+  border-radius: 2px;
+  transition: all 0.3s ease;
+}
+
+#navigation-button:hover .navigation-icon-line {
+  box-shadow: 0 0 10px rgba(0, 212, 255, 0.5);
+}
+
+/* Fullscreen Navigation */
+#navigation-content {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100vh;
+  background: linear-gradient(135deg, rgba(6, 12, 31, 0.98) 0%, rgba(0, 212, 255, 0.05) 100%);
+  /* Reduce blur to improve performance and promote GPU compositing */
+  backdrop-filter: blur(12px);
+  z-index: 1005;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  will-change: transform, opacity;
+  -webkit-transform: translateZ(0);
+  backface-visibility: hidden;
+}
+
+.navigation-close {
+  position: absolute;
+  top: 40px;
+  right: 40px;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+  z-index: 1006;
+  will-change: transform, opacity;
+}
+
+.close-first,
+.close-second {
+  position: absolute;
+  width: 100%;
+  height: 3px;
+  background: #00d4ff;
+  top: 50%;
+  left: 0;
+  transition: all 0.3s ease;
+}
+
+.navigation-icon-line {
+  will-change: transform, opacity;
+}
+
+.close-first {
+  transform: translateY(-50%) rotate(45deg);
+}
+
+.close-second {
+  transform: translateY(-50%) rotate(-45deg);
+}
+
+.navigation-links {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+}
+
+.navigation-links a {
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #ffffff;
+  text-decoration: none;
+  position: relative;
+  letter-spacing: 0.05em;
+  transition: all 0.3s ease;
+}
+
+.navigation-links a::before {
+  content: attr(data-text);
+  position: absolute;
+  top: 0;
+  left: 0;
+  color: #00d4ff;
+  overflow: hidden;
+  width: 0;
+  transition: width 0.5s ease;
+}
+
+.navigation-links a:hover::before {
+  width: 100%;
+}
+
+/* Social icons in fullscreen navigation */
+.navigation-social {
+  position: absolute;
+  bottom: 120px;
+  display: flex;
+  gap: 25px;
+  align-items: center;
+}
+
+.navigation-social a {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.navigation-social a:hover {
+  transform: scale(1.2);
+}
+
+.navigation-social img {
+  width: 30px;
+  height: 30px;
+  filter: brightness(0) invert(1);
+  transition: filter 0.3s ease;
+}
+
+.navigation-social a:hover img {
+  filter: brightness(0) invert(1) drop-shadow(0 0 20px rgba(0, 212, 255, 0.9));
+}
+
+@media (max-width: 768px) {
+  /* Nascondi navbar desktop su mobile */
+  #navigation-bar {
+    display: none;
+  }
+
+  /* Mostra solo il menu toggle su mobile */
+  #navigation-button {
+    display: flex !important;
+  }
+
+  /* Logo in alto a sinistra su mobile */
+  .mobile-nav-logo {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    z-index: 1000;
+    display: flex !important;
+  }
+
+  .mobile-nav-logo img {
+    height: 40px;
+    width: auto;
+    filter: brightness(0) invert(1) drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
+  }
+
+  .nav-container {
+    padding: 15px 20px;
+  }
+
+  .menu-link {
+    font-size: 0.8rem;
+  }
+
+  .nav-logo {
+    height: 36px;
+  }
+
+  .navigation-links a {
+    font-size: 2rem;
+  }
+
+  .navigation-close {
+    top: 30px;
+    right: 30px;
+    width: 35px;
+    height: 35px;
+  }
+
+  .navigation-links {
+    gap: 25px;
+  }
+
+  /* Ottimizza icone social nel menu fullscreen per mobile */
+  .navigation-social {
+    bottom: 100px;
+    gap: 20px;
+  }
+
+  .navigation-social img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+@media (min-width: 769px) {
+  /* Nascondi navigation button su desktop */
+  #navigation-button {
+    display: none !important;
+  }
+
+  /* Nascondi logo mobile su desktop */
+  .mobile-nav-logo {
+    display: none !important;
+  }
+}

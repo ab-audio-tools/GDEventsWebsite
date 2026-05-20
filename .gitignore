@@ -1,0 +1,63 @@
+.DS_Store
+Thumbs.db
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Next.js build output
+.next/
+out/
+build/
+dist/
+
+# Temporary / cache
+.cache/
+.parcel-cache/
+tmp/
+temp/
+.turbo/
+
+# Runtime files
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage
+coverage/
+.nyc_output/
+
+# Editor / IDE
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Deployment / hosting
+.vercel/
+.now/
+
+# TypeScript
+*.tsbuildinfo
+
+# Environment variables (sensitive) - keep examples committed
+.env
+.env.local
+.env.*.local
+
+# Keep example env file tracked
+!/.env.example
+
+# Allow committing built `www` folders if intentionally present
+# (the repo currently has `www/` and `www.bak/` tracked). Remove
+# the following lines if you want to keep www/ files ignored.
+www/
+www.bak/
