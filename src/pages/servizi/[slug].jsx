@@ -22,7 +22,7 @@ import {
 
 export default function ServizioPage({ service, slug }) {
   const meta = generatePageMeta({
-    title: `${service.name} — Service AVL Milano | GD Events`,
+    title: service.seoTitle || `${service.name} — Service AVL Milano | GD Events`,
     description: service.shortDescription,
     path: `/servizi/${slug}`,
     keywords: getServiceKeywords(slug),

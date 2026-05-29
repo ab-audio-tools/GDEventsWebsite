@@ -67,3 +67,63 @@ body {
   color: #00d4ff;
   text-shadow: 0 0 20px rgba(0, 212, 255, 0.5);
 }
+
+/* ── Pagina 404 ──────────────────────────────────────────────────────────── */
+.not-found-content {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 40px 24px;
+  background: #060c1f;
+}
+
+.not-found-code {
+  font-size: clamp(80px, 20vw, 160px);
+  font-weight: 700;
+  line-height: 1;
+  color: #00d4ff;
+  text-shadow: 0 0 40px rgba(0, 212, 255, 0.4);
+  margin-bottom: 16px;
+}
+
+.not-found-content h1 {
+  font-size: clamp(20px, 4vw, 36px);
+  font-weight: 600;
+  color: #ffffff;
+  margin-bottom: 12px;
+}
+
+.not-found-sub {
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.6);
+  max-width: 480px;
+  margin-bottom: 40px;
+  line-height: 1.6;
+}
+
+.not-found-actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+}
+
+.not-found-secondary {
+  background: transparent;
+  border: none;
+  color: #00d4ff;
+  font-size: 15px;
+  font-family: inherit;
+  cursor: pointer;
+  padding: 8px 0;
+  transition: opacity 0.2s ease;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.not-found-secondary:hover {
+  opacity: 0.75;
+}

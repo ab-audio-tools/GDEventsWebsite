@@ -66,6 +66,7 @@ const Contact = () => {
         email: formData.email,
         title: formData.service,
         message: formData.message,
+        data_evento: formData.data_evento || 'Non specificata',
       };
       console.debug('=== PRIMARY EMAIL (Contact) ===');
       console.debug('Params:', primaryParams);
@@ -215,7 +216,7 @@ const Contact = () => {
             >
               <option value="">Seleziona un servizio</option>
               <option value="convention">Convention</option>
-              <option value="feste-aziendali">Feste Aziendali</option>
+              <option value="eventi-aziendali">Eventi Aziendali</option>
               <option value="stand-fieristici">Stand Fieristici</option>
               <option value="vetrine">Vetrine</option>
               <option value="concerti">Concerti</option>

@@ -32,6 +32,7 @@ export default function BlogPostPage({ article }) {
       ? `${DEFAULT_SEO.siteUrl}${article.image.startsWith('/') ? '' : '/'}${article.image}`
       : `${DEFAULT_SEO.siteUrl}/gde.png`,
     datePublished: article.date,
+    dateModified: article.dateModified || article.date,
     author: {
       '@type': 'Person',
       name: 'Staff GD Events',
