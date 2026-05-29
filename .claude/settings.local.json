@@ -31,7 +31,15 @@
       "Bash(ls \"C:\\\\Users\\\\bisho\\\\AppData\\\\Local\\\\Temp\" | grep -i png | head -10 2>/dev/null || \\\\ *)",
       "Bash(ls -t \"C:\\\\Users\\\\bisho\\\\Downloads\" | head -10 *)",
       "Bash(python3 -c \"from PIL import Image; print\\('Pillow OK'\\)\")",
-      "Bash(python -c \"from PIL import Image; print\\('Pillow OK'\\)\")"
+      "Bash(python -c \"from PIL import Image; print\\('Pillow OK'\\)\")",
+      "Bash(powershell -Command \"Compress-Archive -Path 'GD events React cursor\\\\.claude\\\\worktrees\\\\nice-lovelace-b99dcc\\\\*' -DestinationPath 'gd-events-final-2026-05-29.zip' -Force\")",
+      "Bash(powershell -Command \"\\(Get-Item 'gd-events-final-2026-05-29.zip'\\).Length / 1MB\")",
+      "Bash(npx kill-port *)",
+      "Bash(echo \"PID=$!\")",
+      "Bash(Read \"C:\\\\Users\\\\bisho\\\\AppData\\\\Local\\\\Temp\\\\claude\\\\C--Users-bisho-Desktop-GD-events-React-cursor--claude-worktrees-nice-lovelace-b99dcc\\\\57c7a756-ce3b-49be-8be4-bf5704f41a72\\\\tasks\\\\b4uf8rbhm.output\")",
+      "mcp__Claude_in_Chrome__tabs_context_mcp",
+      "Bash(python3 -c ' *)",
+      "Bash(python -c ' *)"
     ]
   }
 }

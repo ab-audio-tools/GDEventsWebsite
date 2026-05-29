@@ -47,6 +47,7 @@ export const defaultArticles = [
     slug: 'scegliere-impianto-audio-evento-aziendale',
     title: 'Come scegliere l\'impianto audio perfetto per un evento aziendale',
     date: '2026-02-05',
+    dateModified: '2026-05-10',
     tag: 'Audio',
     excerpt:
       'Line array o diffusori compatti? Ecco i criteri tecnici per garantire copertura uniforme e chiarezza del parlato.',
@@ -136,6 +137,7 @@ export const defaultArticles = [
     slug: 'luci-architetturali-errori-comuni',
     title: 'Luci architetturali: tre errori che fanno perdere valore a una facciata',
     date: '2026-01-28',
+    dateModified: '2026-05-03',
     tag: 'Lighting',
     excerpt:
       'Dall\'angolo di proiezione alla temperatura colore: le scelte che trasformano un edificio in un\'icona notturna.',
@@ -282,6 +284,7 @@ export const defaultArticles = [
     slug: 'regia-evento-referente-unico',
     title: 'Regia evento: perché un solo referente tecnico fa la differenza',
     date: '2026-01-15',
+    dateModified: '2026-04-28',
     tag: 'Produzione',
     excerpt:
       'Coordinare audio, luci, video e tempistiche riduce costi e imprevisti. Ecco come impostare la regia.',

@@ -69,7 +69,7 @@ const Navigation = () => {
 
   const menuItems = [
     { href: '#header', label: 'HOME' },
-    { href: '#services', label: 'SKILL' },
+    { href: '#services', label: 'TECNICA' },
     { href: '#services-gallery-section', label: 'SERVIZI' },
     { href: '#blog', label: 'BLOG' },
     { href: '#contact', label: 'CONTATTI' },
@@ -115,7 +115,7 @@ const Navigation = () => {
               className="menu-link"
               onClick={(e) => handleAnchorClick(e, '#services')}
             >
-              SKILL
+              TECNICA
             </a>
           </motion.div>
           <motion.div

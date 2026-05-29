@@ -14,23 +14,23 @@ const Services = () => {
     {
       icon: FaWarehouse,
       title: '1800 m²',
-      description: 'Ci sta dentro tutto: attrezzatura, crew, idee, una barca. Tranquillo: gli imprevisti li parcheggiamo noi.',
+      description: '1800 m² di magazzino a Settimo Milanese: attrezzatura audio, video e luci sempre disponibile, crew pronta, logistica risolta.',
     },
     {
       icon: FaCalendarDays,
       title: 'Dal 2013',
-      description: 'Stesso team, stessi valori, stesso obiettivo: far funzionare gli eventi. Sempre. Dal primo giorno.',
+      description: 'Dal 2013 al servizio di eventi professionali a Milano e in tutta la Lombardia. Stesso team, stessi valori, stesso obiettivo: far funzionare gli eventi.',
     },
     {
       icon: HiLightBulb,
       title: '180.000W',
-      description: 'Pronti ad illuminare qualsiasi cosa. Anche le idee più strampalate del regista.',
+      description: '180.000W di potenza luci con fixture professionali, tra cui ETC, ARRI e Clay Paky. Pronti a illuminare qualsiasi spazio, qualsiasi concept.',
       glow: true,
     },
     {
       icon: FaAward,
       title: '200+ eventi',
-      description: 'Dai palchi ai matrimoni, dai musei alle fiere: ogni evento è un progetto a sé, trattato con la stessa cura.',
+      description: '200+ eventi realizzati: dai palchi ai matrimoni, dalle fiere ai musei. Ogni progetto con la stessa cura tecnica.',
     },
   ];
 
@@ -65,7 +65,7 @@ const Services = () => {
       variants={containerVariants}
     >
       <motion.div className="services-heading" variants={itemVariants}>
-        <span className="color">Skill</span>
+        <span className="color">Tecnica</span>
       </motion.div>
 
       <motion.div className="services-content" variants={containerVariants}>
