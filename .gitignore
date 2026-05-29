@@ -36,6 +36,7 @@ coverage/
 .idea/
 *.sublime-workspace
 *.sublime-project
+.git_todo
 
 # OS files
 .DS_Store
