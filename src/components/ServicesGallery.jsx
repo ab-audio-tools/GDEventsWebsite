@@ -103,42 +103,79 @@ const ServicesGallery = () => {
         throw new Error('Configurazione EmailJS mancante. Verifica il file .env');
       }
 
-      // Invia email a info@gd-events.it con i dati del form
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          to_email: 'info@gd-events.it',
-          from_name: formData.name,
-          from_email: formData.email,
-          service: formData.service,
-          message: formData.message,
-          reply_to: formData.email,
-        },
-        publicKey
-      );
+      // Debug: loggare le variabili per verificare che siano presenti
+      console.debug('EmailJS config', { serviceId, templateId, autoresponseTemplateId, publicKey });
 
-      // Invia email di conferma automatica al cliente
-      await emailjs.send(
-        serviceId,
-        autoresponseTemplateId,
-        {
-          to_email: formData.email,
-          to_name: formData.name,
-          service: formData.service,
-        },
-        publicKey
-      );
+      // Invia email a info@gd-events.it con i dati del form
+      const primaryParams = {
+        name: formData.name,
+        email: formData.email,
+        title: formData.service,
+        message: formData.message,
+      };
+      console.debug('=== PRIMARY EMAIL (ServicesGallery) ===');
+      console.debug('ServiceID:', serviceId);
+      console.debug('TemplateID:', templateId);
+      console.debug('Template Params:', JSON.stringify(primaryParams, null, 2));
+      try {
+        const sendResult = await emailjs.send(serviceId, templateId, primaryParams, publicKey);
+        console.debug('✓ PRIMARY EMAIL SENT', sendResult);
+      } catch (err) {
+        console.error('✗ Primary email send failed:', err.message, err);
+        throw err;
+      }
+
+      // Invia email di conferma automatica al cliente solo se presente email valida
+      const clientEmail = formData.email && String(formData.email).trim();
+      const isValidEmail = clientEmail && /@/.test(clientEmail);
+      if (isValidEmail) {
+        const autoParams = { name: formData.name, title: formData.service, email: clientEmail };
+        console.debug('=== AUTORESPONSE EMAIL (ServicesGallery) ===');
+        console.debug('ServiceID:', serviceId);
+        console.debug('TemplateID:', autoresponseTemplateId);
+        console.debug('Template Params:', JSON.stringify(autoParams, null, 2));
+        try {
+          const sendAuto = await emailjs.send(serviceId, autoresponseTemplateId, autoParams, publicKey);
+          console.debug('✓ AUTORESPONSE SENT', sendAuto);
+        } catch (err) {
+          console.error('✗ Autoresponse send failed:', err.message, err);
+          // don't rethrow: primary was already sent
+        }
+      } else {
+        console.warn('⚠ Autoresponse non inviato: email cliente mancante o non valida', { clientEmail });
+      }
 
       setSubmitStatus('success');
       setFormData({ name: '', email: '', service: '', message: '' });
     } catch (error) {
-      console.error('Errore invio email:', error);
+      // Log dettagliato dell'errore
+      try {
+        console.error('Errore invio email (dettagli):', error, {
+          message: error?.message,
+          status: error?.status,
+          text: error?.text,
+        });
+      } catch (logErr) {
+        console.error('Errore invio email:', error);
+      }
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Inizializza EmailJS con la chiave pubblica (compatibilità)
+  useEffect(() => {
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    if (publicKey && emailjs && typeof emailjs.init === 'function') {
+      try {
+        emailjs.init(publicKey);
+        console.debug('EmailJS inizializzato con public key (ServicesGallery)');
+      } catch (err) {
+        console.warn('EmailJS init fallita (ServicesGallery)', err);
+      }
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData({
