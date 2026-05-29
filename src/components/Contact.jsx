@@ -21,7 +21,7 @@
  *   service     → service (select con 11 opzioni)
  *   message     → message
  */
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import emailjs from '@emailjs/browser';
@@ -51,54 +51,64 @@ const Contact = () => {
     setSubmitStatus(null);
 
     try {
-      // Configurazione EmailJS da variabili d'ambiente
       const serviceId = process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID;
       const templateId = process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID;
       const autoresponseTemplateId = process.env.NEXT_PUBLIC_EMAILJS_AUTORESPONSE_TEMPLATE_ID;
       const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
 
-      // Verifica che le variabili d'ambiente siano configurate
       if (!serviceId || !templateId || !autoresponseTemplateId || !publicKey) {
         throw new Error('Configurazione EmailJS mancante. Verifica il file .env');
       }
 
-      // Invia email a info@gd-events.it con i dati del form
-      await emailjs.send(
-        serviceId,
-        templateId,
-        {
-          to_email: 'info@gd-events.it',
-          from_name: formData.name,
-          from_email: formData.email,
-          data_evento: formData.data_evento || 'Non specificata',
-          service: formData.service,
-          message: formData.message,
-          reply_to: formData.email,
-        },
-        publicKey
-      );
+      // Invia email primaria a info@gd-events.it
+      const primaryParams = {
+        name: formData.name,
+        email: formData.email,
+        title: formData.service,
+        message: formData.message,
+      };
+      console.debug('=== PRIMARY EMAIL (Contact) ===');
+      console.debug('Params:', primaryParams);
+      await emailjs.send(serviceId, templateId, primaryParams, publicKey);
+      console.debug('✓ PRIMARY EMAIL SENT');
 
-      // Invia email di conferma automatica al cliente
-      await emailjs.send(
-        serviceId,
-        autoresponseTemplateId,
-        {
-          to_email: formData.email,
-          to_name: formData.name,
-          service: formData.service,
-        },
-        publicKey
-      );
+      // Invia autoresponse al cliente
+      const clientEmail = formData.email && String(formData.email).trim();
+      const isValidEmail = clientEmail && /@/.test(clientEmail);
+      if (isValidEmail) {
+        const autoParams = { name: formData.name, title: formData.service, email: clientEmail };
+        console.debug('=== AUTORESPONSE EMAIL (Contact) ===');
+        console.debug('Params:', autoParams);
+        try {
+          await emailjs.send(serviceId, autoresponseTemplateId, autoParams, publicKey);
+          console.debug('✓ AUTORESPONSE SENT');
+        } catch (err) {
+          console.error('✗ Autoresponse failed (non-critical):', err.message);
+        }
+      }
 
       setSubmitStatus('success');
       setFormData({ name: '', email: '', data_evento: '', service: '', message: '' });
     } catch (error) {
-      console.error('Errore invio email:', error);
+      console.error('✗ Email send error:', error.message || error);
       setSubmitStatus('error');
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Inizializza EmailJS con la chiave pubblica (compatibilità)
+  useEffect(() => {
+    const publicKey = process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY;
+    if (publicKey && emailjs && typeof emailjs.init === 'function') {
+      try {
+        emailjs.init(publicKey);
+        console.debug('EmailJS inizializzato con public key');
+      } catch (err) {
+        console.warn('EmailJS init fallita', err);
+      }
+    }
+  }, []);
 
   const handleInputChange = (e) => {
     setFormData({
