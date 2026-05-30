@@ -38,6 +38,7 @@ coverage/
 *.sublime-project
 .git_todo
 .claude
+.htaccess
 
 # OS files
 .DS_Store
