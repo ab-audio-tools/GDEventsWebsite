@@ -62,3 +62,12 @@ Thumbs.db
 # the following lines if you want to keep www/ files ignored.
 www/
 www.bak/
+
+
+deploy.sh
+build.sh
+.ovhconfig
+deploy.sh
+.bashrc
+.bash_profile
+.bash_logout
