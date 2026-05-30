@@ -37,6 +37,7 @@ coverage/
 *.sublime-workspace
 *.sublime-project
 .git_todo
+.claude
 
 # OS files
 .DS_Store
