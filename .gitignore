@@ -75,3 +75,5 @@ deploy.sh
 .bash_profile
 .bash_logout
 EMAILJS_SETUP.md
+deploy.sh
+mandaindeploy.sh
