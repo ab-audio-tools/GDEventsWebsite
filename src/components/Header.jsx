@@ -15,7 +15,7 @@
  *     senza alterare l'estetica del subtitle visivo.
  *   - video preload="none": il video background NON viene scaricato
  *     al caricamento iniziale della pagina — impatto diretto su LCP.
- *     Il poster (thumbnail.PNG) viene mostrato finché il video non parte.
+ *     Il poster (thumbnail.webp) viene mostrato finché il video non parte.
  */
 import React, { useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
@@ -128,7 +128,7 @@ const Header = ({ navigateTo }) => {
         muted
         playsInline
         preload="none"
-        poster={getAssetPath('thumbnail.PNG')}
+        poster={getAssetPath('thumbnail.webp')}
       >
         <source src={getAssetPath('videobg.mp4')} type="video/mp4" />
       </video>

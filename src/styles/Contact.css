@@ -138,7 +138,7 @@
   transition: all 0.3s ease;
 }
 
-.contact-info-icon-text h6 {
+.contact-info-icon-text .contact-info-label {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 0.9rem;
   color: rgba(255, 255, 255, 0.6);
@@ -211,7 +211,7 @@
     height: 44px;
   }
 
-  .contact-info-icon-text h6 {
+  .contact-info-icon-text .contact-info-label {
     font-size: 0.85rem;
   }
 

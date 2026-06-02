@@ -207,7 +207,9 @@ const Contact = () => {
               onChange={handleInputChange}
               whileFocus={{ scale: 1.02, borderColor: '#00d4ff' }}
             />
+            <label htmlFor="ct-service" className="visually-hidden">Servizio</label>
             <motion.select
+              id="ct-service"
               name="service"
               value={formData.service}
               onChange={handleInputChange}
@@ -279,7 +281,7 @@ const Contact = () => {
                   transition={{ duration: 0.5 }}
                 />
                 <div className="contact-info-icon-text">
-                  <h6>{info.title}</h6>
+                  <p className="contact-info-label">{info.title}</p>
                   <p>{info.content}</p>
                 </div>
               </motion.div>

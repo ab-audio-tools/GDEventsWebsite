@@ -29,7 +29,7 @@ export const servicesData = [
     name: 'Convention',
     seoTitle: 'Service AVL Convention e Congressi Milano | GD Events',
     category: 'Soluzioni tecniche per convention e meeting aziendali',
-    heroImage: '/images/convention.jpeg',
+    heroImage: '/images/convention.webp',
     alt: 'Service audio video luci per convention Milano — GD Events',
     shortDescription:
       'Regia audio, video e luci per convention e meeting aziendali a Milano. Sala plenaria, breakout e streaming coordinati da un unico team. Richiedi preventivo.',
@@ -46,7 +46,7 @@ export const servicesData = [
         title: 'Service AVL completo per convention a Milano',
         text:
           `GD Events gestisce l'intero impianto tecnico per convention e congressi a Milano: sistemi audio line array, video wall ad alta definizione, illuminazione scenica programmabile e regia broadcast professionale. Dalla sala plenaria alle breakout room, un unico interlocutore tecnico per tutto l'evento.`,
-        image: '/images/convention.jpeg',
+        image: '/images/convention.webp',
         imageAlign: 'right',
       },
       {
@@ -76,7 +76,7 @@ export const servicesData = [
     slug: 'stand-fieristici',
     name: 'Stand fieristici',
     category: 'Luce, audio e video per stand che fermano le persone',
-    heroImage: '/images/stand_fiera.jpeg',
+    heroImage: '/images/stand_fiera.webp',
     alt: 'Allestimento tecnico stand fieristico con illuminazione professionale',
     shortDescription:
       `Stand fieristici con illuminazione LED, schermi e audio calibrati per catturare l'attenzione in fiera. Service tecnico AVL a Milano. Richiedi preventivo.`,
@@ -93,14 +93,14 @@ export const servicesData = [
         title: 'Allestimento tecnico AVL per stand fieristici',
         text:
           `GD Events progetta e installa impianti audio, video e luci per stand fieristici a Milano — Fiera Milano Rho, Fiera Milano City, Superstudio e altri spazi espositivi. Illuminazione scenografica con fixture professionali, display LED e gestione multimediale centralizzata. Sopralluogo tecnico incluso nel servizio.`,
-        image: '/images/stand_fiera.jpeg',
+        image: '/images/stand_fiera.webp',
         imageAlign: 'left',
       },
       {
         title: 'Illuminazione che valorizza il prodotto',
         text:
           `La luce di uno stand non illumina lo spazio: illumina il prodotto. Progettiamo temperatura colore e direzione dell'illuminazione in base alla natura dell'oggetto esposto — materiali riflettenti, tessuti, schermi, superfici opache. Fixture professionali, tra cui ARRI e ETC, per key light e illuminazione perimetrale.`,
-        image: '/images/vetrina.jpeg',
+        image: '/images/vetrina.webp',
         imageAlign: 'right',
       },
       {
@@ -117,7 +117,7 @@ export const servicesData = [
     name: 'Concerti',
     seoTitle: 'Service Audio e Luci Concerti Live Milano | GD Events',
     category: 'Impianti audio, luci e video per live show',
-    heroImage: '/images/concert.jpeg',
+    heroImage: '/images/concert.webp',
     alt: 'Service audio line array e luci per concerto live Milano',
     shortDescription:
       'Line array, luci motorizzate, video mapping e special effects per live show di qualità. Service audio video luci concerti a Milano. Richiedi preventivo.',
@@ -134,7 +134,7 @@ export const servicesData = [
         title: 'Service audio e luci per concerti live a Milano',
         text:
           `GD Events fornisce il service tecnico completo per concerti live a Milano e in Lombardia: line array dimensionato sulla venue, console digitale in FOH e monitor, teste mobili e wash professionali, console DMX per il disegno luci. Dall'indie club ai concerti open air da diverse migliaia di persone.`,
-        image: '/images/concert.jpeg',
+        image: '/images/concert.webp',
         imageAlign: 'right',
       },
       {
@@ -164,7 +164,7 @@ export const servicesData = [
     slug: 'illuminazione-architetturale',
     name: 'Illuminazione architetturale',
     category: 'Luce per facciate, edifici storici e installazioni urbane',
-    heroImage: '/images/illum_arch.jpeg',
+    heroImage: '/images/illum_arch.webp',
     alt: 'Illuminazione architetturale su edificio storico con LED RGB',
     shortDescription:
       'Progetti di illuminazione LED per facciate ed edifici a Milano e Lombardia. Scenari dinamici DMX e risparmio energetico certificato. Richiedi preventivo.',
@@ -181,7 +181,7 @@ export const servicesData = [
         title: 'Illuminazione architetturale per edifici e spazi',
         text:
           `GD Events progetta e installa sistemi di illuminazione architetturale per facciate, monumenti, spazi pubblici e interni commerciali a Milano e in Lombardia. Fixture professionali, tra cui ETC e ARRI, per installazioni permanenti; sistemi LED RGB dinamici per effetti cromatici programmabili. Interventi da poche decine di metri quadri fino a edifici interi.`,
-        image: '/images/illum_arch.jpeg',
+        image: '/images/illum_arch.webp',
         imageAlign: 'left',
       },
       {
@@ -205,7 +205,7 @@ export const servicesData = [
     name: 'Installazioni fisse',
     seoTitle: 'Impianti Audio Video Permanenti Milano | GD Events',
     category: 'Impianti permanenti per sale conferenze, teatri e spazi aziendali',
-    heroImage: '/images/fixed.jpeg',
+    heroImage: '/images/fixed.webp',
     alt: 'Impianto audio video fisso per auditorium Milano',
     shortDescription:
       'Impianti audio, luci e video permanenti per sale conferenze e auditorium a Milano. Progettazione, installazione e manutenzione incluse. Richiedi preventivo.',
@@ -222,7 +222,7 @@ export const servicesData = [
         title: 'Impianti audio video fissi per spazi permanenti',
         text:
           `GD Events progetta e installa impianti audio, video e luci permanenti per auditorium, sale conferenze, spazi polifunzionali e luoghi di culto a Milano e in Lombardia. Sistemi line array, colonna o diffusori a soffitto, processori DSP, controllo remoto da tablet o pannello a muro. Garanzia e manutenzione incluse post-installazione.`,
-        image: '/images/fixed.jpeg',
+        image: '/images/fixed.webp',
         imageAlign: 'right',
       },
       {
@@ -238,7 +238,7 @@ export const servicesData = [
     slug: 'produzione-eventi',
     name: 'Produzione eventi',
     category: 'Regia tecnica completa per eventi aziendali e brand experience',
-    heroImage: '/images/produzione_eventi.jpeg',
+    heroImage: '/images/produzione_eventi.webp',
     alt: 'Regia tecnica eventi con sistema broadcast professionale',
     shortDescription:
       'Regia tecnica completa con un unico referente per coordinare audio, luci, video e fornitori a Milano. Dal brief alla messa in scena. Richiedi preventivo.',
@@ -346,7 +346,7 @@ export const servicesData = [
     name: 'Vetrine',
     seoTitle: 'Illuminazione Vetrine e Retail Milano | GD Events',
     category: 'Illuminazione retail per valorizzare prodotti e brand identity',
-    heroImage: '/images/vetrina.jpeg',
+    heroImage: '/images/vetrina.webp',
     alt: 'Illuminazione LED professionale per vetrina retail Milano',
     shortDescription:
       `Illuminazione LED per vetrine retail a Milano: luce d'accento, RGB e scenari stagionali programmabili. Valorizza prodotti e brand identity. Richiedi preventivo.`,

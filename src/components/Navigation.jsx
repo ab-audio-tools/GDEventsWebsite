@@ -93,7 +93,7 @@ const Navigation = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <img src={getAssetPath('/gde.png')} alt="logo" />
+        <img src={getAssetPath('/gde.webp')} alt="logo" width={100} height={48} />
       </motion.a>
 
       {/* Desktop Menu Bar */}
@@ -141,7 +141,7 @@ const Navigation = () => {
               className="logo-center"
               onClick={(e) => handleAnchorClick(e, '#header')}
             >
-              <img src={getAssetPath('/gde.png')} alt="logo" className="nav-logo" />
+              <img src={getAssetPath('/gde.webp')} alt="logo" className="nav-logo" width={100} height={48} />
             </a>
           </motion.div>
           <motion.div

@@ -264,7 +264,9 @@ const ServicesGallery = () => {
                   whileFocus={{ scale: 1.02, borderColor: '#00d4ff' }}
                   required
                 />
+                <label htmlFor="sg-service" className="visually-hidden">Servizio</label>
                 <motion.select
+                  id="sg-service"
                   name="service"
                   value={formData.service}
                   onChange={handleInputChange}

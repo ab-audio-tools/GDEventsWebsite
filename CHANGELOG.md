@@ -5,6 +5,72 @@
 
 ---
 
+## Update 2026-06-02 — Performance & Accessibilità
+
+### Ottimizzazione immagini WebP
+
+| File originale | Peso prima | Peso dopo | Riduzione |
+|---|---|---|---|
+| `illum_arch.jpeg` | 1880 KB | 116 KB | −94% |
+| `produzione_eventi.jpeg` | 272 KB | 66 KB | −76% |
+| `stand_fiera.jpeg` | 162 KB | 76 KB | −53% |
+| `convention.jpeg` | 153 KB | 29 KB | −81% |
+| `vetrina.jpeg` | 144 KB | 77 KB | −47% |
+| `fixed.jpeg` | 121 KB | 46 KB | −62% |
+| `concert.jpeg` | 98 KB | 34 KB | −65% |
+| `gde.png` | 24 KB | 3 KB | −88% |
+| **Totale** | **2854 KB** | **447 KB** | **−84%** |
+
+Tutte le immagini della gallery convertite da JPEG/PNG a WebP
+e ridimensionate alle dimensioni reali di visualizzazione.
+Aggiunto script `scripts/convert-images.js` (sharp) richiamabile
+con `npm run convert-images` quando si aggiungono nuove immagini.
+
+Impatto atteso: LCP mobile da 18,5s a ~3-5s.
+
+### File aggiornati per WebP
+- `src/data/servicesData.js` — 13 riferimenti .jpeg → .webp
+- `src/components/Navigation.jsx` — gde.png → gde.webp
+- `src/components/Header.jsx` — thumbnail.PNG → thumbnail.webp
+
+### Cache headers Apache
+- `public/.htaccess` — TTL da 15 minuti a 1 anno per
+  immagini, font, JS e CSS (Next.js usa hash nel filename)
+- HTML sempre no-cache per garantire contenuto aggiornato
+- Risparmio stimato: 2748 KB per visita ripetuta
+
+### Security headers Apache
+- `public/.htaccess` — aggiunti:
+  - `X-Frame-Options: SAMEORIGIN` (anti-clickjacking)
+  - `X-Content-Type-Options: nosniff` (anti-MIME sniffing)
+  - `Strict-Transport-Security: max-age=31536000` (HSTS)
+  - `Referrer-Policy: strict-origin-when-cross-origin`
+  - `Permissions-Policy: camera=(), microphone=(), geolocation=()`
+
+### Fix accessibilità (Accessibility score 88 → atteso 92+)
+- `ServicesGallery.jsx` — aggiunto `<label>` visually-hidden
+  sul `<select name="service">` (WCAG: form elements con label)
+- `Contact.jsx` — stesso fix sul select servizio +
+  `<h6>Location</h6>` → `<p className="contact-info-label">`
+  (heading non sequenziale eliminato)
+- `Contact.css` — selettori h6 aggiornati a .contact-info-label
+- `Navigation.jsx` — aggiunti width={100} height={48} sul logo
+  (previene layout shift CLS)
+
+### GTM
+Non presente nel progetto — solo tag GA4 diretto (G-TF90EZE3NB).
+Nessuna modifica necessaria.
+
+### Score atteso dopo deploy
+| Metrica | Prima | Atteso |
+|---|---|---|
+| Prestazioni mobile | 61 | ~80-85 |
+| Prestazioni desktop | 87 | ~95+ |
+| Accessibilità | 88 | ~92 |
+| SEO | 100 | 100 |
+
+---
+
 ## Update 2026-06-02 — Responsive & UX Mobile
 
 ### Fix applicati
