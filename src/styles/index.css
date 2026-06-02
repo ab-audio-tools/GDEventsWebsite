@@ -130,6 +130,11 @@ body {
   opacity: 0.75;
 }
 
+/* Elemento <main> semantico — display:contents preserva il layout esistente */
+#main-content {
+  display: contents;
+}
+
 /* ── Accessibilità: rispetta prefers-reduced-motion ─────────────────────── */
 @media (prefers-reduced-motion: reduce) {
   *,

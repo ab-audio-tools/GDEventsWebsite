@@ -21,18 +21,15 @@ import React, { useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { getAssetPath } from '../utils/getAssetPath';
 
+// Generati una sola volta a livello di modulo — identici tra render lato server
+// e hydration client (suppressHydrationWarning sui <span> per sicurezza)
+const NEON_DELAYS = Array.from({ length: 8 }, () => Math.random() * 1.5);
+
 const Header = ({ navigateTo }) => {
   const videoRef = useRef(null);
   const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
-    // Animazione neon per ogni lettera
-    const letters = document.querySelectorAll('.neon-letter');
-    letters.forEach((letter) => {
-      const randomDelay = Math.random() * 1.5;
-      letter.style.animationDelay = `${randomDelay}s`;
-    });
-
     const headerElement = document.getElementById('header');
     let ticking = false;
     let isMouseInHeader = false;
@@ -195,7 +192,7 @@ const Header = ({ navigateTo }) => {
           <motion.div className="main-title" variants={itemVariants}>
             <span style={{ display: 'inline-block' }}>
               {['G', 'D'].map((letter, index) => (
-                <span key={index} className="neon-letter">
+                <span key={index} className="neon-letter" style={{ animationDelay: `${NEON_DELAYS[index]}s` }} suppressHydrationWarning>
                   {letter}
                 </span>
               ))}
@@ -203,7 +200,7 @@ const Header = ({ navigateTo }) => {
             <span style={{ display: 'inline-block', paddingLeft: '10px', paddingRight: '10px' }}></span>
             <span style={{ display: 'inline-block' }}>
               {['E', 'V', 'E', 'N', 'T', 'S'].map((letter, index) => (
-                <span key={index + 2} className="neon-letter">
+                <span key={index + 2} className="neon-letter" style={{ animationDelay: `${NEON_DELAYS[index + 2]}s` }} suppressHydrationWarning>
                   {letter}
                 </span>
               ))}

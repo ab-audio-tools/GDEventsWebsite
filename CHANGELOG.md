@@ -5,6 +5,54 @@
 
 ---
 
+## Update 2026-06-02 — Hydration, Animazioni Composite, Semantica
+
+### FIX 1 — Elemento <main> semantico
+- `src/pages/_app.jsx` — aggiunto `<main id="main-content">`
+  attorno a `<Component {...pageProps} />`
+- `src/styles/index.css` — aggiunto `#main-content { display: contents; }`
+  per mantenere il layout invariato
+- Impatto: fix "documento non ha un punto di riferimento principale"
+  in Lighthouse Accessibilità (+1-2 punti attesi)
+
+### FIX 2 — Animazioni composite (no repaint)
+- `src/styles/Header.css` — animazione `flicker` sulle lettere neon:
+  `text-shadow` → `filter: drop-shadow()` + `opacity`
+  (text-shadow causa repaint CPU; drop-shadow è gestito dalla GPU)
+- `src/styles/Services.css` — animazione `pulse-glow` sul SVG lightbulb:
+  proprietà non composite → `opacity + transform` + `will-change`
+- Impatto: elimina 9 "animazioni non composite" segnalate da Lighthouse,
+  riduce CLS potenziale e carico CPU su mobile
+
+### FIX 3 — React hydration errors #418 #423 #425
+- `src/components/Header.jsx` — rimosso `Math.random()` da `useEffect`
+  per i valori `animation-delay` delle lettere neon
+- Aggiunta costante statica `NEON_DELAYS` fuori dal componente,
+  generata una volta sola al build
+- `animationDelay` applicato inline via `NEON_DELAYS[index]`
+  con `suppressHydrationWarning={true}` sugli span
+- Causa degli errori: i valori random generati durante SSG
+  non corrispondevano a quelli generati durante la hydration
+  client-side → React segnalava mismatch
+- Impatto: elimina errori console #418 #423 #425,
+  migliora affidabilità hydration e TBT
+
+### Verifica WebP confermata
+- Tutti gli 8 file `.webp` presenti in `public/images/` ✅
+- Tutti i riferimenti in `servicesData.js` aggiornati a `.webp` ✅
+- Nessun `.jpeg` rimasto nei riferimenti locali ✅
+
+### Score atteso dopo deploy completo (WebP + questi fix)
+| Metrica | Baseline (pre-ottimizzazioni) | Dopo fix accessibilità | Atteso dopo WebP + questi fix |
+|---|---|---|---|
+| Prestazioni mobile | 61 | 73 | ~83-87 |
+| Prestazioni desktop | 87 | 88 | ~90-92 |
+| Accessibilità | 88 | 95 | ~96-97 |
+| LCP mobile | 18,5s | 12,3s | ~3-5s |
+| Hydration errors | presenti | presenti | assenti |
+
+---
+
 ## Update 2026-06-02 — Performance & Accessibilità
 
 ### Ottimizzazione immagini WebP

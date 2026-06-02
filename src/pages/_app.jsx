@@ -90,8 +90,10 @@ export default function App({ Component, pageProps }) {
       {/* Loader come overlay — vedi nota "Pattern Loader overlay" nell'intestazione */}
       {isLoading && <Loader />}
       <Navigation />
+      <main id="main-content">
+        <Component {...pageProps} />
+      </main>
       <WhatsAppButton />
-      <Component {...pageProps} />
     </div>
   );
 }
