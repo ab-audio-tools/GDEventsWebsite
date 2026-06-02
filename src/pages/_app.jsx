@@ -29,6 +29,7 @@ import { Space_Grotesk } from 'next/font/google';
 import Navigation from '../components/Navigation';
 import Loader from '../components/Loader';
 import Cursor from '../components/Cursor';
+import WhatsAppButton from '../components/WhatsAppButton';
 
 // CSS globali — tutti centralizzati qui (vedi nota sopra)
 import '../styles/index.css';
@@ -45,6 +46,7 @@ import '../styles/SectionDivider.css';
 import '../styles/ServicePage.css';
 import '../styles/Services.css';
 import '../styles/ServicesGallery.css';
+import '../styles/WhatsAppButton.css';
 
 /**
  * Font self-hosted tramite next/font/google.
@@ -88,6 +90,7 @@ export default function App({ Component, pageProps }) {
       {/* Loader come overlay — vedi nota "Pattern Loader overlay" nell'intestazione */}
       {isLoading && <Loader />}
       <Navigation />
+      <WhatsAppButton />
       <Component {...pageProps} />
     </div>
   );

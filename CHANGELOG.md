@@ -5,6 +5,48 @@
 
 ---
 
+## Update 2026-06-02 — Responsive & UX Mobile
+
+### Fix applicati
+
+| File | Classe | Modifica |
+|------|--------|----------|
+| `src/styles/Header.css` | `.main-title` 480px | Regressione font-size: 3.5rem → 2rem |
+| `src/styles/Header.css` | `.contactpic` | Touch target: 40px → 44px tutti i breakpoint |
+| `src/styles/Header.css` | `.cta-button` | Aggiunto min-height: 44px |
+| `src/styles/ServicesGallery.css` | input/select/textarea | font-size: 1rem + min-height: 48px mobile (fix zoom iOS) |
+| `src/styles/Contact.css` | input/select/textarea | font-size: 1rem + min-height: 48px mobile (fix zoom iOS) |
+| `src/styles/Contact.css` | `.icon` | Touch target: 40px → 44px mobile |
+| `src/styles/index.css` | html, body | overflow-x: hidden + max-width: 100vw |
+| `src/styles/index.css` | globale | @media prefers-reduced-motion aggiunto |
+| `src/styles/Navigation.css` | `.navigation-close` | Touch target: 40px → 44px |
+| `src/styles/Navigation.css` | `.menu-link` | Padding: 5px → 10px |
+| `src/styles/Navigation.css` | breakpoint hamburger | Esteso da 768px a 1024px |
+| `src/styles/Header.css` | `.social-media-links` | Nascosto nel range 768-1024px (fix sovrapposizione) |
+| `src/styles/Header.css` | `.contact-links` | Nascosto nel range 768-1024px (fix sovrapposizione) |
+| `src/styles/Services.css` | `.service-description p` | font-size: 0.9rem → 1rem mobile |
+| `src/styles/Blog.css` | `.blog-card p` | font-size: 0.9rem → 1rem mobile |
+| `src/styles/Blog.css` | `.blog-card-cta` | Aggiunto min-height: 44px mobile |
+| `src/styles/ServicePage.css` | testi sezione | font-size: 0.9rem → 1rem mobile (4 classi) |
+| `src/styles/ServicePage.css` | `.service-cta-button` | Aggiunto min-height: 44px |
+| `src/styles/ServicePage.css` | `.service-back-button` | Aggiunto min-height: 44px |
+| `src/styles/ServicePage.css` | `.service-bottom-cta` | Padding laterale: 0 → 16px mobile, 0 → 24px tablet |
+| `src/styles/ServicePage.css` | `.service-bottom-cta-inner` | Override padding verticale su tablet |
+| `src/styles/WhatsAppButton.css` | `.whatsapp-fab` | bottom: 20px → 24px, right: 20px → 16px |
+| `src/components/WhatsAppButton.jsx` | nuovo componente | Pulsante WhatsApp fisso mobile, #25D366, 56px, solo ≤768px |
+| `src/pages/_app.jsx` | import | WhatsAppButton aggiunto dopo Navigation |
+| `src/components/Header.jsx` | useReducedMotion | Animazioni disabilitate se prefers-reduced-motion |
+| `src/components/Services.jsx` | useReducedMotion | Animazioni disabilitate se prefers-reduced-motion |
+
+### Standard applicati
+- Touch target minimo 44px (Apple) / 48px (Google) su tutti gli elementi interattivi
+- Font-size minimo 1rem (16px) su tutti gli input per prevenire zoom automatico iOS
+- overflow-x: hidden globale per prevenire scroll orizzontale
+- prefers-reduced-motion rispettato via CSS globale e Framer Motion
+- Hero tablet (768-1024px): layout pulito, solo titolo + subtitle + CTA
+
+---
+
 ## 1. PANORAMICA
 
 ### Prima

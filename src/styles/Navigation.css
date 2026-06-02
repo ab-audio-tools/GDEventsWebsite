@@ -59,7 +59,7 @@
   font-size: 0.95rem;
   letter-spacing: 0.1em;
   position: relative;
-  padding: 5px 0;
+  padding: 10px 8px;
   transition: all 0.3s ease;
 }
 
@@ -172,8 +172,8 @@
   position: absolute;
   top: 40px;
   right: 40px;
-  width: 40px;
-  height: 40px;
+  width: 44px;
+  height: 44px;
   cursor: pointer;
   z-index: 1006;
   will-change: transform, opacity;
@@ -267,18 +267,18 @@
   filter: brightness(0) invert(1) drop-shadow(0 0 20px rgba(0, 212, 255, 0.9));
 }
 
-@media (max-width: 768px) {
-  /* Nascondi navbar desktop su mobile */
+@media (max-width: 1024px) {
+  /* Nascondi navbar desktop su tablet e mobile */
   #navigation-bar {
     display: none;
   }
 
-  /* Mostra solo il menu toggle su mobile */
+  /* Mostra il menu toggle su tablet e mobile */
   #navigation-button {
     display: flex !important;
   }
 
-  /* Logo in alto a sinistra su mobile */
+  /* Logo in alto a sinistra su tablet e mobile */
   .mobile-nav-logo {
     position: fixed;
     top: 20px;
@@ -312,15 +312,15 @@
   .navigation-close {
     top: 30px;
     right: 30px;
-    width: 35px;
-    height: 35px;
+    width: 44px;
+    height: 44px;
   }
 
   .navigation-links {
     gap: 25px;
   }
 
-  /* Ottimizza icone social nel menu fullscreen per mobile */
+  /* Ottimizza icone social nel menu fullscreen per tablet e mobile */
   .navigation-social {
     bottom: 100px;
     gap: 20px;
@@ -332,7 +332,7 @@
   }
 }
 
-@media (min-width: 769px) {
+@media (min-width: 1025px) {
   /* Nascondi navigation button su desktop */
   #navigation-button {
     display: none !important;

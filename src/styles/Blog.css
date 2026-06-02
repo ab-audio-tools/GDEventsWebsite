@@ -129,11 +129,12 @@
   }
 
   .blog-card p {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .blog-card-cta {
-    padding: 8px 16px;
-    font-size: 0.85rem;
+    padding: 10px 16px;
+    min-height: 44px;
+    font-size: 0.9rem;
   }
 }

@@ -315,6 +315,7 @@
   background: transparent;
   color: #ffffff;
   padding: 10px 22px;
+  min-height: 44px;
   cursor: pointer;
   font-size: 0.9rem;
   letter-spacing: 0.08em;
@@ -355,6 +356,16 @@
   .service-bottom-cta-inner {
     padding: 0 24px;
   }
+
+  /* Aggiunge margine laterale alla card CTA e ripristina il padding verticale
+     perso per via del gruppo selector sopra */
+  .service-bottom-cta {
+    padding: 10px 24px 50px;
+  }
+
+  .service-bottom-cta-inner {
+    padding: 30px 28px;
+  }
 }
 
 @media (max-width: 768px) {
@@ -389,17 +400,18 @@
   }
 
   .service-hero-overview {
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-bottom: 18px;
   }
 
   .service-hero-highlights li {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .service-cta-button {
     padding: 10px 20px;
-    font-size: 0.85rem;
+    min-height: 44px;
+    font-size: 0.9rem;
   }
 
   .service-hero-media {
@@ -431,11 +443,11 @@
   }
 
   .service-section-text p {
-    font-size: 0.9rem;
+    font-size: 1rem;
   }
 
   .service-bottom-cta {
-    padding: 10px 0 50px;
+    padding: 10px 16px 50px;
   }
 
   .service-bottom-cta-inner {
@@ -449,7 +461,7 @@
   }
 
   .service-bottom-cta-inner p {
-    font-size: 0.9rem;
+    font-size: 1rem;
     margin-bottom: 16px;
   }
 }

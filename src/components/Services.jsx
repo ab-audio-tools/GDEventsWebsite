@@ -1,10 +1,11 @@
 import React from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { FaWarehouse, FaCalendarDays, FaAward } from 'react-icons/fa6';
 import { HiLightBulb } from 'react-icons/hi';
 
 const Services = () => {
+  const prefersReducedMotion = useReducedMotion();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -39,18 +40,18 @@ const Services = () => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.2,
+        staggerChildren: prefersReducedMotion ? 0 : 0.2,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
+    hidden: { y: prefersReducedMotion ? 0 : 50, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
       transition: {
-        duration: 0.6,
+        duration: prefersReducedMotion ? 0.01 : 0.6,
         ease: 'easeOut',
       },
     },

@@ -18,11 +18,12 @@
  *     Il poster (thumbnail.PNG) viene mostrato finché il video non parte.
  */
 import React, { useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { getAssetPath } from '../utils/getAssetPath';
 
 const Header = ({ navigateTo }) => {
   const videoRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
 
   useEffect(() => {
     // Animazione neon per ogni lettera
@@ -94,18 +95,18 @@ const Header = ({ navigateTo }) => {
     visible: {
       opacity: 1,
       transition: {
-        staggerChildren: 0.05,
-        delayChildren: 0.1,
+        staggerChildren: prefersReducedMotion ? 0 : 0.05,
+        delayChildren: prefersReducedMotion ? 0 : 0.1,
       },
     },
   };
 
   const itemVariants = {
-    hidden: { y: 50, opacity: 0 },
+    hidden: { y: prefersReducedMotion ? 0 : 50, opacity: 0 },
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: 0.4, ease: 'easeOut' },
+      transition: { duration: prefersReducedMotion ? 0.01 : 0.4, ease: 'easeOut' },
     },
   };
 
