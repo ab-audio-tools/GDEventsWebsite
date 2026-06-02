@@ -25,25 +25,25 @@ const ServicesGallery = () => {
 
   const galleryItems = [
     {
-      img: getAssetPath('/convention.jpeg'),
+      img: getAssetPath('/convention.webp'),
       title: 'Convention',
       description: 'Sale congressi con sistemi audio/video di ultima generazione e regia broadcast professionale',
       slug: 'convention',
     },
     {
-      img: getAssetPath('/stand_fiera.jpeg'),
+      img: getAssetPath('/stand_fiera.webp'),
       title: 'Stand Fieristici',
       description: 'Allestimenti fieristici con illuminazione scenografica e sistemi multimediali integrati',
       slug: 'stand-fieristici',
     },
     {
-      img: getAssetPath('/concert.jpeg'),
+      img: getAssetPath('/concert.webp'),
       title: 'Concerti',
       description: 'Live show con impianti audio line array, luci robotiche e video mapping spettacolare',
       slug: 'concerti',
     },
     {
-      img: getAssetPath('/illum_arch.jpeg'),
+      img: getAssetPath('/illum_arch.webp'),
       title: 'Illuminazione Architetturale',
       description: 'Valorizzazione di edifici storici e monumenti con illuminazione LED dinamica RGB',
       slug: 'illuminazione-architetturale',
@@ -61,19 +61,19 @@ const ServicesGallery = () => {
       slug: 'eventi-aziendali',
     },
     {
-      img: getAssetPath('/vetrina.jpeg'),
+      img: getAssetPath('/vetrina.webp'),
       title: 'Vetrine',
       description: 'Illuminazione retail con LED RGB controllabili per valorizzare prodotti e brand identity',
       slug: 'vetrine',
     },
     {
-      img: getAssetPath('/fixed.jpeg'),
+      img: getAssetPath('/fixed.webp'),
       title: 'Installazioni Fisse',
       description: 'Impianti audio/video permanenti per auditorium, sale conferenze e spazi polifunzionali',
       slug: 'installazioni-fisse',
     },
     {
-      img: getAssetPath('/produzione_eventi.jpeg'),
+      img: getAssetPath('/produzione_eventi.webp'),
       title: 'Produzione Eventi',
       description: 'Gestione completa dalla progettazione al post-evento con team tecnico specializzato',
       slug: 'produzione-eventi',

@@ -34,6 +34,17 @@ footer.site-footer {
   line-height: 1.5;
 }
 
+.footer-text a {
+  color: #ffffff;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.footer-text a:hover,
+.footer-text a:focus-visible {
+  color: #00d4ff;
+}
+
 .footer-legal {
   color: rgba(255, 255, 255, 0.6);
   font-size: 0.85rem;

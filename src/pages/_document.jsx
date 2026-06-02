@@ -5,6 +5,14 @@ export default function Document() {
     <Html lang="it">
       <Head>
         <meta charSet="utf-8" />
+        <link
+          rel="preload"
+          as="image"
+          href="/images/illum_arch.webp"
+          type="image/webp"
+        />
+        <link rel="preconnect" href="https://www.googletagmanager.com" />
+        <link rel="dns-prefetch" href="https://www.googletagmanager.com" />
         <script
           async
           src="https://www.googletagmanager.com/gtag/js?id=G-TF90EZE3NB"

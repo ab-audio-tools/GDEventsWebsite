@@ -31,15 +31,26 @@ const Header = ({ navigateTo }) => {
 
   useEffect(() => {
     const headerElement = document.getElementById('header');
-    let ticking = false;
+    let rafId = null;
     let isMouseInHeader = false;
+    // Legge rect una sola volta e la aggiorna solo al resize
+    // evita getBoundingClientRect() in ogni mousemove (forced reflow)
+    let cachedRect = null;
+
+    const updateRect = () => {
+      if (headerElement) cachedRect = headerElement.getBoundingClientRect();
+    };
+    updateRect();
+    window.addEventListener('resize', updateRect, { passive: true });
 
     const handleMouseEnter = () => {
       isMouseInHeader = true;
+      updateRect(); // aggiorna rect al momento dell'entrata
     };
 
     const handleMouseLeave = () => {
       isMouseInHeader = false;
+      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
       // Reset parallasse al mouse leave
       if (videoRef.current) {
         videoRef.current.style.setProperty('--video-offset-x', '0px');
@@ -48,28 +59,20 @@ const Header = ({ navigateTo }) => {
     };
 
     const handleMouseMove = (e) => {
-      if (!isMouseInHeader || !ticking) {
-        window.requestAnimationFrame(() => {
-          if (isMouseInHeader && headerElement && videoRef.current) {
-            const rect = headerElement.getBoundingClientRect();
-            const mouseX = e.clientX - rect.left;
-            const mouseY = e.clientY - rect.top;
-            
-            // Normalizza le coordinate (-1 a 1)
-            const xPercent = (mouseX / rect.width - 0.5) * 2;
-            const yPercent = (mouseY / rect.height - 0.5) * 2;
-            
-            // Applica parallasse (max 30px di movimento)
-            const offsetX = xPercent * 30;
-            const offsetY = yPercent * 30;
-
-            videoRef.current.style.setProperty('--video-offset-x', `${offsetX}px`);
-            videoRef.current.style.setProperty('--video-offset-y', `${offsetY}px`);
-          }
-          ticking = false;
-        });
-        ticking = true;
-      }
+      if (!isMouseInHeader) return;
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = window.requestAnimationFrame(() => {
+        if (!isMouseInHeader || !cachedRect || !videoRef.current) return;
+        const mouseX = e.clientX - cachedRect.left;
+        const mouseY = e.clientY - cachedRect.top;
+        // Normalizza le coordinate (-1 a 1)
+        const xPercent = (mouseX / cachedRect.width - 0.5) * 2;
+        const yPercent = (mouseY / cachedRect.height - 0.5) * 2;
+        // Applica parallasse (max 30px di movimento)
+        videoRef.current.style.setProperty('--video-offset-x', `${xPercent * 30}px`);
+        videoRef.current.style.setProperty('--video-offset-y', `${yPercent * 30}px`);
+        rafId = null;
+      });
     };
 
     if (headerElement) {
@@ -79,11 +82,13 @@ const Header = ({ navigateTo }) => {
     document.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
+      if (rafId) cancelAnimationFrame(rafId);
       if (headerElement) {
         headerElement.removeEventListener('mouseenter', handleMouseEnter);
         headerElement.removeEventListener('mouseleave', handleMouseLeave);
       }
       document.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener('resize', updateRect);
     };
   }, []);
 

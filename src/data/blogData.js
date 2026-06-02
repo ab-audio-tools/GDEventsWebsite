@@ -130,7 +130,7 @@ export const defaultArticles = [
         </form>
       </div>
     `,
-    image: '/images/convention.jpeg',
+    image: '/images/convention.webp',
   },
   {
     id: '2',
@@ -277,7 +277,7 @@ export const defaultArticles = [
         </form>
       </div>
     `,
-    image: '/images/illum_arch.jpeg',
+    image: '/images/illum_arch.webp',
   },
   {
     id: '3',
@@ -476,7 +476,7 @@ export const defaultArticles = [
         </form>
       </div>
     `,
-    image: '/images/produzione_eventi.jpeg',
+    image: '/images/produzione_eventi.webp',
   },
 ];
 
