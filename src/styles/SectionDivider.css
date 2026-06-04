@@ -1,11 +1,10 @@
+/* B3: animazione composite — pseudo-element con transform invece di background-position */
 .section-divider {
   position: relative;
   height: 46px;
   width: 100%;
   overflow: hidden;
   background: linear-gradient(90deg, rgba(0, 212, 255, 0.05), rgba(0, 212, 255, 0.25), rgba(0, 212, 255, 0.05));
-  background-size: 200% 100%;
-  animation: divider-shift 6s linear infinite;
 }
 
 .section-divider::before,
@@ -27,22 +26,11 @@
 .section-divider--soft {
   height: 32px;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0.04), rgba(0, 212, 255, 0.18), rgba(255, 255, 255, 0.04));
-  animation-duration: 8s;
 }
 
 .section-divider--bold {
   height: 56px;
   background: linear-gradient(90deg, rgba(0, 212, 255, 0.08), rgba(0, 212, 255, 0.35), rgba(0, 212, 255, 0.08));
-  animation-duration: 5s;
-}
-
-@keyframes divider-shift {
-  0% {
-    background-position: 0% 50%;
-  }
-  100% {
-    background-position: 200% 50%;
-  }
 }
 
 @keyframes divider-pulse {

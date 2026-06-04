@@ -1,37 +1,39 @@
-import React, { useState } from 'react';
-import { motion, AnimatePresence } from 'framer-motion';
+import React, { useState, useRef, useEffect } from 'react';
+import { motion, AnimatePresence, useReducedMotion } from 'framer-motion';
 import { useRouter } from 'next/router';
 import { getAssetPath } from '../utils/getAssetPath';
+import { DURATION, EASE } from '../lib/motion';
 
 const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
+  const hamburgerRef = useRef(null);
+  const menuRef = useRef(null);
+  const prefersReducedMotion = useReducedMotion();
 
   const handleAnchorClick = (e, href) => {
     e.preventDefault();
     e.stopPropagation();
-    
+
     setIsOpen(false);
-    
+
     // Se non siamo sulla homepage, naviga prima alla homepage
     if (router.pathname !== '/') {
       router.push('/' + href);
       return;
     }
-    
+
     // Se siamo già sulla homepage, scrolla usando scrollIntoView
     const targetId = href.replace('#', '');
     const target = document.getElementById(targetId);
-    
+
     if (target) {
-      // Usa scrollIntoView che gestisce meglio l'overflow
-      target.scrollIntoView({ 
+      target.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
-      
-      // Aggiusta per l'altezza della navbar dopo lo scroll
+
       setTimeout(() => {
         const navbarHeight = 90;
         const currentScroll = window.scrollY;
@@ -43,7 +45,7 @@ const Navigation = () => {
     }
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     let ticking = false;
     let lastScrolled = false;
 
@@ -52,7 +54,7 @@ const Navigation = () => {
         window.requestAnimationFrame(() => {
           const headerHeight = window.innerHeight;
           const shouldBeScrolled = window.pageYOffset > headerHeight - 100;
-          
+
           if (shouldBeScrolled !== lastScrolled) {
             setIsScrolled(shouldBeScrolled);
             lastScrolled = shouldBeScrolled;
@@ -67,6 +69,42 @@ const Navigation = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  // B4 — Escape key chiude il menu e riporta il focus all'hamburger
+  useEffect(() => {
+    if (!isOpen) return;
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape') {
+        setIsOpen(false);
+        hamburgerRef.current?.focus();
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen]);
+
+  // B4 — Sposta il focus al primo elemento del menu quando si apre
+  useEffect(() => {
+    if (isOpen && menuRef.current) {
+      const firstFocusable = menuRef.current.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
+      firstFocusable?.focus();
+    }
+  }, [isOpen]);
+
+  // B4 — Focus trap: Tab cicla solo tra gli elementi del menu aperto
+  const handleMenuKeyDown = (e) => {
+    if (!menuRef.current || e.key !== 'Tab') return;
+    const focusable = menuRef.current.querySelectorAll('a, button, [tabindex]:not([tabindex="-1"])');
+    const first = focusable[0];
+    const last = focusable[focusable.length - 1];
+    if (e.shiftKey && document.activeElement === first) {
+      e.preventDefault();
+      last.focus();
+    } else if (!e.shiftKey && document.activeElement === last) {
+      e.preventDefault();
+      first.focus();
+    }
+  };
+
   const menuItems = [
     { href: '#header', label: 'HOME' },
     { href: '#services', label: 'TECNICA' },
@@ -76,10 +114,11 @@ const Navigation = () => {
   ];
 
   const socialLinks = [
-    { src: 'instagram logo.png', alt: 'instagram' },
-    { src: 'facebook logo.png', alt: 'facebook' },
-    { src: 'linkedin logo.png', alt: 'linkedin' },
-    { src: 'twitter logo.png', alt: 'twitter' },
+    // TODO: sostituire href="" con URL profilo reale e rimuovere pointerEvents:none, tabIndex:-1, aria-hidden
+    { src: 'instagram logo.png', alt: 'instagram', label: 'Seguici su Instagram', href: '' },
+    { src: 'facebook logo.png',  alt: 'facebook',  label: 'Seguici su Facebook',  href: '' },
+    { src: 'linkedin logo.png',  alt: 'linkedin',  label: 'Seguici su LinkedIn',  href: '' },
+    { src: 'twitter logo.png',   alt: 'twitter',   label: 'Seguici su Twitter / X', href: '' },
   ];
 
   return (
@@ -93,16 +132,16 @@ const Navigation = () => {
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
       >
-        <img src={getAssetPath('/gde.webp')} alt="logo" width={100} height={48} />
+        <img src={getAssetPath('/gde.webp')} alt="GD Events" width={100} height={48} />
       </motion.a>
 
       {/* Desktop Menu Bar */}
       <motion.div
         id="navigation-bar"
         className={isScrolled ? 'scrolled' : ''}
-        initial={{ y: -100 }}
+        initial={{ y: prefersReducedMotion ? 0 : -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.4, ease: 'easeOut' }}
+        transition={{ duration: prefersReducedMotion ? 0 : DURATION.normal, ease: EASE.out }}
       >
         <div className="nav-container">
           <motion.div
@@ -141,7 +180,7 @@ const Navigation = () => {
               className="logo-center"
               onClick={(e) => handleAnchorClick(e, '#header')}
             >
-              <img src={getAssetPath('/gde.webp')} alt="logo" className="nav-logo" width={100} height={48} />
+              <img src={getAssetPath('/gde.webp')} alt="GD Events — torna all'inizio" className="nav-logo" width={100} height={48} />
             </a>
           </motion.div>
           <motion.div
@@ -173,9 +212,11 @@ const Navigation = () => {
         </div>
       </motion.div>
 
-      {/* Navigation Toggle Button */}
-      <motion.div
+      {/* Navigation Toggle Button — A3: motion.button con aria-label e aria-expanded */}
+      <motion.button
+        ref={hamburgerRef}
         id="navigation-button"
+        type="button"
         onClick={() => setIsOpen(!isOpen)}
         className={`${isScrolled ? 'scrolled' : ''} ${isOpen ? 'open' : ''}`}
         whileHover={{ scale: 1.1 }}
@@ -183,33 +224,44 @@ const Navigation = () => {
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         transition={{ delay: 0.2 }}
+        aria-label="Apri menu"
+        aria-expanded={isOpen}
+        aria-controls="fullscreen-nav"
       >
         <div className="navigation-icon">
           <div className="navigation-icon-line"></div>
           <div className="navigation-icon-line"></div>
           <div className="navigation-icon-line"></div>
         </div>
-      </motion.div>
+      </motion.button>
 
       {/* Fullscreen Navigation */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
-            id="navigation-content"
-            initial={{ y: '-100%' }}
+            ref={menuRef}
+            id="fullscreen-nav"
+            role="dialog"
+            aria-modal="true"
+            aria-label="Menu di navigazione"
+            initial={{ y: prefersReducedMotion ? 0 : '-100%' }}
             animate={{ y: 0 }}
-            exit={{ y: '-100%' }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
+            exit={{ y: prefersReducedMotion ? 0 : '-100%' }}
+            transition={{ duration: prefersReducedMotion ? 0 : DURATION.normal, ease: EASE.inOut }}
+            onKeyDown={handleMenuKeyDown}
           >
-            <motion.div
+            {/* A3: motion.button con aria-label */}
+            <motion.button
+              type="button"
               className="navigation-close"
-              onClick={() => setIsOpen(false)}
+              onClick={() => { setIsOpen(false); hamburgerRef.current?.focus(); }}
               whileHover={{ scale: 1.2, rotate: 90 }}
               whileTap={{ scale: 0.9 }}
+              aria-label="Chiudi menu"
             >
               <span className="close-first"></span>
               <span className="close-second"></span>
-            </motion.div>
+            </motion.button>
             <div className="navigation-links">
               {menuItems.map((item, index) => (
                 <motion.a
@@ -237,7 +289,17 @@ const Navigation = () => {
                   whileHover={{ scale: 1.2 }}
                   whileTap={{ scale: 0.9 }}
                 >
-                  <img src={getAssetPath(social.src)} alt={social.alt} />
+                  {/* TODO: rimuovere pointerEvents:none, tabIndex:-1, aria-hidden quando href è valorizzato */}
+                  <a
+                    href={social.href}
+                    aria-label={social.label}
+                    data-social={social.alt}
+                    style={{ pointerEvents: 'none', cursor: 'default' }}
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  >
+                    <img src={getAssetPath(social.src)} alt="" />
+                  </a>
                 </motion.div>
               ))}
             </div>

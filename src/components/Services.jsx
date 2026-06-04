@@ -65,9 +65,10 @@ const Services = () => {
       animate={inView ? 'visible' : 'hidden'}
       variants={containerVariants}
     >
-      <motion.div className="services-heading" variants={itemVariants}>
+      {/* A6: h2 semantico per heading di sezione */}
+      <motion.h2 className="services-heading" variants={itemVariants}>
         <span className="color">Tecnica</span>
-      </motion.div>
+      </motion.h2>
 
       <motion.div className="services-content" variants={containerVariants}>
         {services.map((service, index) => (
@@ -88,12 +89,14 @@ const Services = () => {
               />
             </motion.div>
             <div className="service-description">
-              <motion.h2
+              {/* A7: i valori statistici non sono heading — uso p.stat-value */}
+              <motion.p
+                className="stat-value"
                 animate={inView ? { scale: 1 } : { scale: 0 }}
                 transition={{ delay: index * 0.2 + 0.5, type: 'spring' }}
               >
                 {service.title}
-              </motion.h2>
+              </motion.p>
               <p>{service.description}</p>
             </div>
           </motion.div>

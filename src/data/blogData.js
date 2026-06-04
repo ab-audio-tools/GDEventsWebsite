@@ -25,15 +25,8 @@
  *       e rigenerare il sito via CI/CD a ogni nuovo articolo.
  */
 
-// Keys localStorage (non più in uso attivo)
+// Keys localStorage (riservato per futuro pannello CMS)
 const STORAGE_KEY = 'gdevents_blog_articles';
-const AUTH_KEY = 'gdevents_blog_auth';
-
-// Credenziali admin legacy (pannello rimosso — codice non raggiungibile in produzione)
-const ADMIN_CREDENTIALS = {
-  username: 'blog-admin',
-  passwordHash: 'f8e9d4c2b5a7e3f1d6c8b2a5e9f3d7c1', // Hash simulato
-};
 
 /**
  * defaultArticles
@@ -562,36 +555,6 @@ export const deleteBlogArticle = (id) => {
   saveBlogArticles(getBlogArticles().filter((a) => a.id !== id));
 };
 
-// Funzioni di autenticazione
-const simpleHash = (str) => {
-  // Hash semplice per demo (in produzione usare bcrypt o simili)
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash = hash & hash;
-  }
-  return Math.abs(hash).toString(16);
-};
-
-export const authenticateAdmin = (username, password) => {
-  // PASSWORD REDATTA — pannello admin rimosso, questa funzione non è raggiungibile in produzione.
-  // Non ripristinare la password reale nel codice sorgente: usare variabile d'ambiente o rimuovere il blocco.
-  const expectedHash = simpleHash('REDACTED');
-  const providedHash = simpleHash(password);
-  
-  if (username === ADMIN_CREDENTIALS.username && providedHash === expectedHash) {
-    const token = `${Date.now()}-${Math.random().toString(36)}`;
-    sessionStorage.setItem(AUTH_KEY, token);
-    return true;
-  }
-  return false;
-};
-
-export const isAuthenticated = () => {
-  return !!sessionStorage.getItem(AUTH_KEY);
-};
-
-export const logout = () => {
-  sessionStorage.removeItem(AUTH_KEY);
-};
+// D2: authenticateAdmin, simpleHash, isAuthenticated, logout rimossi
+// Il pannello admin è stato rimosso — il codice di autenticazione non era raggiungibile in produzione
+// Le funzioni CRUD sopra (add/update/delete) sono mantenute per futuro pannello CMS

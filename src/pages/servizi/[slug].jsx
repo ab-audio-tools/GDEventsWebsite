@@ -33,6 +33,16 @@ export default function ServizioPage({ service, slug }) {
     { name: service.name, path: `/servizi/${slug}` },
   ];
 
+  // E1: immagine service schema — usa heroImage se presente, altrimenti logo
+  const serviceImage = service.heroImage && !/^https?:\/\//.test(service.heroImage)
+    ? `https://www.gd-events.it${service.heroImage}`
+    : (service.heroImage || 'https://www.gd-events.it/images/gde.webp');
+
+  // E3: og:image con immagine specifica del servizio invece del solo logo
+  const ogImage = service.heroImage && !/^https?:\/\//.test(service.heroImage)
+    ? `https://www.gd-events.it${service.heroImage}`
+    : 'https://www.gd-events.it/gde.png';
+
   return (
     <>
       <Head>
@@ -44,14 +54,14 @@ export default function ServizioPage({ service, slug }) {
         <meta property="og:title" content={meta.title} />
         <meta property="og:description" content={meta.description} />
         <meta property="og:url" content={meta.canonical} />
-        <meta property="og:image" content="https://www.gd-events.it/gde.png" />
+        <meta property="og:image" content={ogImage} />
         <meta name="twitter:card" content="summary_large_image" />
         <meta name="twitter:title" content={meta.title} />
         <meta name="twitter:description" content={meta.description} />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(getServiceSchema(service.name, service.shortDescription)),
+            __html: JSON.stringify(getServiceSchema(service.name, service.shortDescription, serviceImage)),
           }}
         />
         <script

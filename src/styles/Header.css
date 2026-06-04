@@ -49,9 +49,11 @@
 }
 
 /* Social Media Links - Right Side */
+/* D5: aggiunto top: 50% per ancorare correttamente il translateY(-50%) */
 .social-media-links {
   position: absolute;
   right: 40px;
+  top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;
@@ -151,7 +153,8 @@
   font-weight: 600;
   border-radius: 50px;
   cursor: pointer;
-  transition: all 0.4s ease;
+  /* B3: transition su proprietà specifiche composite */
+  transition: color 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
   letter-spacing: 0.1em;
   display: inline-flex;
   align-items: center;
@@ -188,9 +191,11 @@
 }
 
 /* Contact Icons - Left Side */
+/* D5: aggiunto top: 50% per ancorare correttamente il translateY(-50%) */
 .contact-links {
   position: absolute;
   left: 40px;
+  top: 50%;
   transform: translateY(-50%);
   display: flex;
   flex-direction: column;

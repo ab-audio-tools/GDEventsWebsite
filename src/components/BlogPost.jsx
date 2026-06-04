@@ -1,11 +1,14 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
+import { DURATION, EASE } from '../lib/motion';
 
 const BlogPost = ({ article }) => {
   const router = useRouter();
+  const prefersReducedMotion = useReducedMotion();
 
-  useLayoutEffect(() => {
+  /* A9: useEffect invece di useLayoutEffect — scroll non richiede esecuzione sincrona */
+  useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
@@ -30,9 +33,9 @@ const BlogPost = ({ article }) => {
     <div className="blog-post-container">
       <motion.article
         className="blog-post"
-        initial={{ opacity: 0, y: 30 }}
+        initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 30 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
+        transition={{ duration: prefersReducedMotion ? 0 : DURATION.normal, ease: EASE.out }}
       >
         <button className="back-button" onClick={() => router.push('/#blog')}>
           ← Torna al Blog
@@ -55,7 +58,8 @@ const BlogPost = ({ article }) => {
 
         {article.image && (
           <div className="blog-post-image">
-            <img src={article.image} alt={article.title} />
+            {/* C6: lazy loading — immagine below-fold dopo l'header */}
+            <img src={article.image} alt={article.title} loading="lazy" />
           </div>
         )}
 

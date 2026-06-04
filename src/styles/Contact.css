@@ -4,6 +4,7 @@
   position: relative;
 }
 
+/* A6: .contact-header è ora un <h2> — reset margine default dell'heading */
 .contact-header {
   font-family: 'Space Grotesk', sans-serif;
   font-size: 4rem;
@@ -115,23 +116,25 @@
   gap: 25px;
 }
 
-.contect-info-content-line {
+/* C7 (anticipato): typo corretto "contect" → "contact" */
+.contact-info-content-line {
   display: flex;
   align-items: center;
   gap: 20px;
   padding: 15px;
   background: rgba(0, 212, 255, 0.03);
   border-radius: 10px;
-  transition: all 0.3s ease;
+  /* B3: transition su proprietà specifiche */
+  transition: transform 0.3s ease, background-color 0.3s ease;
   cursor: pointer;
 }
 
-.contect-info-content-line:hover {
+.contact-info-content-line:hover {
   background: rgba(0, 212, 255, 0.08);
   transform: translateX(10px);
 }
 
-.contect-info-content-line .icon {
+.contact-info-content-line .icon {
   width: 50px;
   height: 50px;
   filter: brightness(0) invert(1);
@@ -202,11 +205,11 @@
     gap: 20px;
   }
 
-  .contect-info-content-line {
+  .contact-info-content-line {
     padding: 12px;
   }
 
-  .contect-info-content-line .icon {
+  .contact-info-content-line .icon {
     width: 44px;
     height: 44px;
   }

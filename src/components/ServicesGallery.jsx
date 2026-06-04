@@ -1,11 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import { useRouter } from 'next/router';
 import emailjs from '@emailjs/browser';
 import { getAssetPath } from '../utils/getAssetPath';
+import { DURATION, EASE } from '../lib/motion';
 
 const ServicesGallery = () => {
+  const prefersReducedMotion = useReducedMotion();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -206,7 +208,7 @@ const ServicesGallery = () => {
                 animate={inView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
                 transition={{ delay: 0.2 }}
               >
-                Trasformiamo le tue idee in eventi memorabili
+                Hai un evento in mente? Parliamone.
               </motion.h2>
 
               
@@ -228,9 +230,12 @@ const ServicesGallery = () => {
                 animate={inView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
                 transition={{ delay: 0.3 }}
               >
+                {/* A5: role="alert" — screen reader annuncia il risultato */}
                 {submitStatus === 'success' && (
                   <motion.div
                     className="form-message success"
+                    role="alert"
+                    aria-live="polite"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
@@ -240,13 +245,18 @@ const ServicesGallery = () => {
                 {submitStatus === 'error' && (
                   <motion.div
                     className="form-message error"
+                    role="alert"
+                    aria-live="polite"
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
                   >
                     ✗ Errore nell'invio. Riprova o contattaci direttamente.
                   </motion.div>
                 )}
+                {/* A4: label visually-hidden per ogni campo */}
+                <label htmlFor="sg-name" className="visually-hidden">Il tuo nome</label>
                 <motion.input
+                  id="sg-name"
                   type="text"
                   name="name"
                   placeholder="Nome"
@@ -255,7 +265,9 @@ const ServicesGallery = () => {
                   whileFocus={{ scale: 1.02, borderColor: '#00d4ff' }}
                   required
                 />
+                <label htmlFor="sg-email" className="visually-hidden">Il tuo indirizzo email</label>
                 <motion.input
+                  id="sg-email"
                   type="email"
                   name="email"
                   placeholder="Email"
@@ -286,7 +298,9 @@ const ServicesGallery = () => {
                   <option value="eventi-privati">Eventi Privati</option>
                   <option value="altro">Altro</option>
                 </motion.select>
+                <label htmlFor="sg-message" className="visually-hidden">Il tuo messaggio</label>
                 <motion.textarea
+                  id="sg-message"
                   name="message"
                   placeholder="Messaggio"
                   rows="4"
@@ -316,22 +330,32 @@ const ServicesGallery = () => {
         {/* Right: Gallery Mosaic */}
         <motion.div
           className="gallery-mosaic"
-          initial={{ x: 100, opacity: 0 }}
-          animate={inView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
-          transition={{ delay: 0.2, duration: 0.4 }}
+          initial={{ x: prefersReducedMotion ? 0 : 100, opacity: 0 }}
+          animate={inView ? { x: 0, opacity: 1 } : { x: prefersReducedMotion ? 0 : 100, opacity: 0 }}
+          transition={{ delay: prefersReducedMotion ? 0 : 0.2, duration: prefersReducedMotion ? 0 : DURATION.normal }}
         >
           <div className="gallery-column">
             {galleryItems.slice(0, 5).map((item, index) => (
+              /* B5: keyboard accessible gallery items */
               <motion.div
                 key={index}
                 className="gallery-item-mosaic"
+                role="button"
+                tabIndex={0}
+                aria-label={`Vai al servizio ${item.title}`}
                 onClick={() => item.slug && router.push(`/servizi/${item.slug}`)}
+                onKeyDown={(e) => {
+                  if ((e.key === 'Enter' || e.key === ' ') && item.slug) {
+                    e.preventDefault();
+                    router.push(`/servizi/${item.slug}`);
+                  }
+                }}
                 onMouseEnter={() => setHoveredIndex(index)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                initial={{ opacity: 0, y: 50 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{ delay: index * 0.05 + 0.2 }}
-                whileHover={{ scale: 1.02, zIndex: 10 }}
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 50 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 50 }}
+                transition={{ delay: prefersReducedMotion ? 0 : index * 0.05 + 0.2, ease: EASE.out }}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.02, zIndex: 10 }}
               >
                 <motion.img
                   src={item.img}
@@ -340,7 +364,7 @@ const ServicesGallery = () => {
                     scale: hoveredIndex === index ? 1 : 1.15,
                     filter: hoveredIndex === index ? 'brightness(1)' : 'brightness(0.7)',
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : DURATION.fast }}
                 />
                 <div className="gallery-title-always">
                   <h3>{item.title}</h3>
@@ -351,7 +375,7 @@ const ServicesGallery = () => {
                     opacity: hoveredIndex === index ? 1 : 0,
                     y: hoveredIndex === index ? 0 : 10,
                   }}
-                  transition={{ duration: 0.2, delay: 0.05 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.2, delay: 0.05 }}
                 >
                   <p>{item.description}</p>
                 </motion.div>
@@ -364,13 +388,22 @@ const ServicesGallery = () => {
               <motion.div
                 key={index + 5}
                 className="gallery-item-mosaic"
+                role="button"
+                tabIndex={0}
+                aria-label={`Vai al servizio ${item.title}`}
                 onClick={() => item.slug && router.push(`/servizi/${item.slug}`)}
+                onKeyDown={(e) => {
+                  if ((e.key === 'Enter' || e.key === ' ') && item.slug) {
+                    e.preventDefault();
+                    router.push(`/servizi/${item.slug}`);
+                  }
+                }}
                 onMouseEnter={() => setHoveredIndex(index + 5)}
                 onMouseLeave={() => setHoveredIndex(null)}
-                initial={{ opacity: 0, y: 50 }}
-                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                transition={{ delay: index * 0.05 + 0.25 }}
-                whileHover={{ scale: 1.02, zIndex: 10 }}
+                initial={{ opacity: 0, y: prefersReducedMotion ? 0 : 50 }}
+                animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: prefersReducedMotion ? 0 : 50 }}
+                transition={{ delay: prefersReducedMotion ? 0 : index * 0.05 + 0.25, ease: EASE.out }}
+                whileHover={prefersReducedMotion ? {} : { scale: 1.02, zIndex: 10 }}
               >
                 <motion.img
                   src={item.img}
@@ -379,7 +412,7 @@ const ServicesGallery = () => {
                     scale: hoveredIndex === index + 5 ? 1 : 1.15,
                     filter: hoveredIndex === index + 5 ? 'brightness(1)' : 'brightness(0.7)',
                   }}
-                  transition={{ duration: 0.3 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : DURATION.fast }}
                 />
                 <div className="gallery-title-always">
                   <h3>{item.title}</h3>
@@ -390,7 +423,7 @@ const ServicesGallery = () => {
                     opacity: hoveredIndex === index + 5 ? 1 : 0,
                     y: hoveredIndex === index + 5 ? 0 : 10,
                   }}
-                  transition={{ duration: 0.2, delay: 0.05 }}
+                  transition={{ duration: prefersReducedMotion ? 0 : 0.2, delay: 0.05 }}
                 >
                   <p>{item.description}</p>
                 </motion.div>

@@ -1,12 +1,15 @@
-import React, { useLayoutEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { getAssetPath } from '../utils/getAssetPath';
+import { DURATION, EASE } from '../lib/motion';
 
 const ServicePage = ({ service, slug }) => {
   const router = useRouter();
+  const prefersReducedMotion = useReducedMotion();
 
-  useLayoutEffect(() => {
+  /* A9: useEffect invece di useLayoutEffect — scroll non richiede esecuzione sincrona */
+  useEffect(() => {
     if ('scrollRestoration' in window.history) {
       window.history.scrollRestoration = 'manual';
     }
@@ -35,9 +38,9 @@ const ServicePage = ({ service, slug }) => {
           <div className="service-hero-grid">
             <motion.div
               className="service-hero-text"
-              initial={{ opacity: 0, x: -40 }}
+              initial={{ opacity: 0, x: prefersReducedMotion ? 0 : -40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.35, ease: 'easeOut' }}
+              transition={{ duration: prefersReducedMotion ? 0 : DURATION.normal, ease: EASE.out }}
             >
               <p className="service-category">{service.category}</p>
               <h1>{service.name}</h1>
@@ -63,9 +66,9 @@ const ServicePage = ({ service, slug }) => {
 
             <motion.div
               className="service-hero-media"
-              initial={{ opacity: 0, x: 40 }}
+              initial={{ opacity: 0, x: prefersReducedMotion ? 0 : 40 }}
               animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.35, ease: 'easeOut', delay: 0.05 }}
+              transition={{ duration: prefersReducedMotion ? 0 : DURATION.normal, ease: EASE.out, delay: prefersReducedMotion ? 0 : 0.05 }}
             >
               <div className="service-hero-image-main">
                 <img
@@ -102,11 +105,13 @@ const ServicePage = ({ service, slug }) => {
               </div>
               <div className="service-section-media">
                 <div className="service-section-image-primary">
+                  {/* C6: lazy loading sulle immagini delle sezioni (below-fold) */}
                   <img
                     src={section.image && /^https?:\/\//.test(section.image)
                       ? section.image
                       : getAssetPath(section.image)}
                     alt={section.title}
+                    loading="lazy"
                   />
                 </div>
                 <div className="service-section-image-floating" />

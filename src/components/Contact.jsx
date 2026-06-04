@@ -22,12 +22,14 @@
  *   message     → message
  */
 import React, { useState, useRef, useEffect } from 'react';
-import { motion } from 'framer-motion';
+import { motion, useReducedMotion } from 'framer-motion';
 import { useInView } from 'react-intersection-observer';
 import emailjs from '@emailjs/browser';
 import { getAssetPath } from '../utils/getAssetPath';
+import { DURATION, EASE } from '../lib/motion';
 
 const Contact = () => {
+  const prefersReducedMotion = useReducedMotion();
   const [ref, inView] = useInView({
     triggerOnce: true,
     threshold: 0.1,
@@ -143,16 +145,17 @@ const Contact = () => {
       ref={ref}
       initial={{ opacity: 0 }}
       animate={inView ? { opacity: 1 } : { opacity: 0 }}
-      transition={{ duration: 0.8 }}
+      transition={{ duration: prefersReducedMotion ? 0 : DURATION.slower, ease: EASE.out }}
     >
-      <motion.div
+      {/* A6: h2 semantico per heading di sezione */}
+      <motion.h2
         className="contact-header"
-        initial={{ y: -50, opacity: 0 }}
-        animate={inView ? { y: 0, opacity: 1 } : { y: -50, opacity: 0 }}
-        transition={{ delay: 0.3 }}
+        initial={{ y: prefersReducedMotion ? 0 : -50, opacity: 0 }}
+        animate={inView ? { y: 0, opacity: 1 } : { y: prefersReducedMotion ? 0 : -50, opacity: 0 }}
+        transition={{ delay: prefersReducedMotion ? 0 : 0.3, duration: prefersReducedMotion ? 0 : DURATION.normal }}
       >
         <span className="color">Contattaci</span>
-      </motion.div>
+      </motion.h2>
 
       <div className="contact-content">
         {/* Contact Form */}
@@ -163,9 +166,12 @@ const Contact = () => {
           transition={{ delay: 0.5 }}
         >
           <form ref={formRef} onSubmit={handleSubmit}>
+            {/* A5: role="alert" aria-live="polite" — screen reader annuncia il risultato */}
             {submitStatus === 'success' && (
               <motion.div
                 className="form-message success"
+                role="alert"
+                aria-live="polite"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
@@ -175,13 +181,18 @@ const Contact = () => {
             {submitStatus === 'error' && (
               <motion.div
                 className="form-message error"
+                role="alert"
+                aria-live="polite"
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
               >
                 ✗ Errore nell'invio. Riprova o contattaci direttamente.
               </motion.div>
             )}
+            {/* A4: label visually-hidden per ogni campo */}
+            <label htmlFor="ct-name" className="visually-hidden">Il tuo nome</label>
             <motion.input
+              id="ct-name"
               type="text"
               name="name"
               placeholder="Nome"
@@ -190,7 +201,9 @@ const Contact = () => {
               whileFocus={{ scale: 1.02, borderColor: '#00d4ff' }}
               required
             />
+            <label htmlFor="ct-email" className="visually-hidden">Il tuo indirizzo email</label>
             <motion.input
+              id="ct-email"
               type="email"
               name="email"
               placeholder="Email"
@@ -199,7 +212,9 @@ const Contact = () => {
               whileFocus={{ scale: 1.02, borderColor: '#00d4ff' }}
               required
             />
+            <label htmlFor="ct-data" className="visually-hidden">Data dell&apos;evento (indicativa)</label>
             <motion.input
+              id="ct-data"
               type="text"
               name="data_evento"
               placeholder="Data evento (indicativa)"
@@ -229,7 +244,9 @@ const Contact = () => {
               <option value="eventi-privati">Eventi Privati</option>
               <option value="altro">Altro</option>
             </motion.select>
+            <label htmlFor="ct-message" className="visually-hidden">Il tuo messaggio</label>
             <motion.textarea
+              id="ct-message"
               name="message"
               placeholder="Messaggio"
               rows="4"
@@ -262,16 +279,15 @@ const Contact = () => {
           animate={inView ? { x: 0, opacity: 1 } : { x: 100, opacity: 0 }}
           transition={{ delay: 0.6 }}
         >
-          <div className="contact-info-header">Contact Info</div>
+          <div className="contact-info-header">Come contattarci</div>
           <div className="contact-info-content">
             {contactInfo.map((info, index) => (
               <motion.div
                 key={index}
-                className="contect-info-content-line"
+                className="contact-info-content-line"
                 initial={{ y: 20, opacity: 0 }}
                 animate={inView ? { y: 0, opacity: 1 } : { y: 20, opacity: 0 }}
-                transition={{ delay: 0.7 + index * 0.1 }}
-                whileHover={{ x: 10, scale: 1.05 }}
+                transition={{ delay: prefersReducedMotion ? 0 : 0.7 + index * 0.1 }}
               >
                 <motion.img
                   src={getAssetPath(info.icon)}

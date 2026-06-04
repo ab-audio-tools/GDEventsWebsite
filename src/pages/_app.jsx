@@ -25,6 +25,7 @@
  */
 
 import { useState, useEffect } from 'react';
+import { AnimatePresence } from 'framer-motion';
 import { Space_Grotesk } from 'next/font/google';
 import Navigation from '../components/Navigation';
 import Loader from '../components/Loader';
@@ -86,9 +87,15 @@ export default function App({ Component, pageProps }) {
   return (
     // spaceGrotesk.className inietta @font-face per Space Grotesk self-hosted
     <div id="all" className={spaceGrotesk.className}>
+      {/* C5: skip-to-content link (WCAG 2.4.1) — visibile solo al focus da tastiera */}
+      <a href="#main-content" className="skip-link">
+        Vai al contenuto principale
+      </a>
       <Cursor />
-      {/* Loader come overlay — vedi nota "Pattern Loader overlay" nell'intestazione */}
-      {isLoading && <Loader />}
+      {/* A8: AnimatePresence abilita l'exit animation del Loader */}
+      <AnimatePresence mode="wait">
+        {isLoading && <Loader key="loader" />}
+      </AnimatePresence>
       <Navigation />
       <main id="main-content">
         <Component {...pageProps} />

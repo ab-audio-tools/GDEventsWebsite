@@ -198,8 +198,8 @@
     gap: 60px;
   }
 
+  /* D4: .cta-sticky-wrapper rimosso dal selettore — non presente nel JSX */
   .cta-contacts-column,
-  .cta-sticky-wrapper,
   .cta-content {
     position: static;
   }

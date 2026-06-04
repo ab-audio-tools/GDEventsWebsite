@@ -5,6 +5,152 @@
 
 ---
 
+## Update 2026-06-04 — Audit Full: GRUPPO E — SEO micro-ottimizzazioni
+
+### E1 — Service schema con immagine
+- `src/pages/servizi/[slug].jsx` — `getServiceSchema()` ora riceve il terzo argomento `serviceImage` (URL assoluto dell'immagine hero per ogni servizio); URL assoluto risolto dalla heroImage relativa
+- OG image delle pagine servizio aggiornata alla heroImage specifica del servizio
+
+### E2 — Title tag homepage accorciato
+- `src/pages/index.jsx` — title: "Service Audio Video Luci Milano | AVL Professionale — GD Events" (72 chars) → "Service AVL Milano | Audio Video Luci — GD Events" (49 chars)
+- og:title e twitter:title allineati al nuovo title
+
+### E3 — OG image homepage → immagine hero
+- `src/pages/index.jsx` — `og:image` e `twitter:image` da `gde.png` (logo piccolo) a `illum_arch.webp` (immagine hero landscape, più rappresentativa per anteprime social)
+- Aggiunti `og:image:width: 800`, `og:image:height: 600`
+
+---
+
+## Update 2026-06-04 — Audit Full: GRUPPO D — Cleanup codice e CSS
+
+### D2 — Dead code blogData.js
+- `src/data/blogData.js` — rimossi `authenticateAdmin`, `simpleHash`, `isAuthenticated`, `logout`, `AUTH_KEY`, `ADMIN_CREDENTIALS`
+- Mantenute funzioni CRUD localStorage (add/update/delete) per futuro pannello CMS
+- Rimossa costante `AUTH_KEY` non più necessaria
+
+### D4 — Dead CSS rimosso
+- `src/styles/ServicePage.css` — rimossi `.service-breadcrumb`, `.ghost-link`, `.service-breadcrumb-current` (nessun breadcrumb in ServicePage.jsx)
+- `src/styles/ServicesGallery.css` — rimosso `.cta-sticky-wrapper` dal selettore media query (non presente nel JSX)
+- `src/styles/Navigation.css` — `#navigation-bar.scrolled` già rimosso in GRUPPO B
+
+---
+
+## Update 2026-06-04 — Audit Full: GRUPPO C — UI polish, testi e accessibilità fine
+
+### C1 — `text-wrap: balance/pretty`
+- `src/styles/index.css` — `h1, h2, h3, h4 { text-wrap: balance }` globale; `.subtitle, .service-hero-overview, .service-hero-lead { text-wrap: pretty }`
+
+### C2 — Font smoothing
+- `src/styles/index.css` — `html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale }`
+
+### C3 — Rimosso duplicate hover in Contact
+- `src/components/Contact.jsx` — rimosso `whileHover={{ x: 10, scale: 1.05 }}` da `.contact-info-content-line`; il CSS ha già `transform: translateX(10px)` su hover
+
+### C4 — Testi aggiornati
+- `Contact.jsx` — "Contact Info" → "Come contattarci"
+- `Blog.jsx` — description "Ultimi articoli…" → "Guide tecniche e consigli pratici per chi organizza eventi."
+- `Blog.jsx` — CTA card "Leggi articolo" → "Leggi →"
+- `ServicesGallery.jsx` — h2 CTA "Trasformiamo le tue idee…" → "Hai un evento in mente? Parliamone."
+
+### C5 — Skip-to-content link
+- `src/pages/_app.jsx` — `<a href="#main-content" className="skip-link">` prima di tutto il resto
+- `src/styles/index.css` — `.skip-link` visibile solo al focus da tastiera (top: -48px → 0 su :focus)
+
+### C6 — `loading="lazy"` su immagini below-fold
+- `src/components/ServicePage.jsx` — immagini delle sezioni
+- `src/components/BlogPost.jsx` — immagine dell'articolo
+
+### D5 (anticipato) — Fix `transform: translateY(-50%)` senza `top`
+- `src/styles/Header.css` — aggiunto `top: 50%` a `.social-media-links` e `.contact-links` per ancorare correttamente la centratura verticale
+
+---
+
+## Update 2026-06-04 — Audit Full: GRUPPO B — Motion tokens e animazioni composite
+
+### B1 — Token system `src/lib/motion.js`
+- Creato `src/lib/motion.js` con `DURATION` (fast/normal/slow/slower), `EASE` (out/in/inOut/spring/bounce), `VARIANTS` (fadeUp/fadeIn/scaleIn/stagger)
+- Importato e applicato in Header.jsx, Navigation.jsx, Blog.jsx, Contact.jsx, ServicesGallery.jsx, ServicePage.jsx, BlogPost.jsx
+
+### B2 — `useReducedMotion()` nei componenti mancanti
+- Aggiunto in: Navigation.jsx, Blog.jsx, Contact.jsx, ServicesGallery.jsx, ServicePage.jsx, BlogPost.jsx
+- Tutte le animazioni ora azzerano `y/x` e impostano `duration: 0` quando ridotta-motion è attiva
+
+### B3 — `transition: all` → proprietà specifiche composite
+- `Navigation.css` — `#navigation-bar`: `transition: background-color 0.3s, box-shadow 0.3s`
+- `Navigation.css` — `#navigation-button`: specificate background-color, border-color, box-shadow
+- `Services.css` — `.service`: `transition: transform 0.4s, border-color 0.4s`
+- `Header.css` — `.cta-button`: `transition: color 0.2s, background-color 0.2s, box-shadow 0.2s`
+- `Contact.css` — `.contact-info-content-line`: `transition: transform 0.3s, background-color 0.3s`
+- `SectionDivider.css` — rimossa animazione `background-position` (non-composite); divider ora statico
+
+### B4 — Focus trap + Escape nel menu mobile *(già eseguito in GRUPPO A)*
+
+### B5 — Blog cards e gallery items keyboard accessible
+- `Blog.jsx` — `tabIndex={0}`, `onKeyDown` (Enter/Space) su ogni `motion.article`; button CTA con `tabIndex=-1 aria-hidden` per evitare doppia navigazione
+- `ServicesGallery.jsx` — `role="button"`, `tabIndex={0}`, `aria-label`, `onKeyDown` su ogni gallery item
+
+### Fix aggiuntivo (B) — Typo CSS `contect` → `contact`
+- `Contact.css` — `.contect-info-content-line` → `.contact-info-content-line` (tutte le occorrenze)
+- `Contact.jsx` — `className="contect-info-content-line"` → `"contact-info-content-line"`
+
+---
+
+## Update 2026-06-04 — Audit Full: GRUPPO A — Fix critici accessibilità e codice
+
+### A1 — Social icons: wrapper <a> pronto per URL
+- `src/components/Header.jsx` — social icons wrappate in `<a href="" aria-label aria-hidden tabIndex=-1 style:pointerEvents:none>` — pronte per URL reali
+- `src/components/Navigation.jsx` — stessa implementazione nel menu fullscreen
+- Commento TODO in entrambi i file per rimozione `pointerEvents:none` quando URL valorizzato
+
+### A2 — Rimosso `user-select: none` dal body
+- `src/styles/index.css` — `body { user-select: none }` rimosso
+- Impatto: testo selezionabile su tutto il sito (WCAG 1.3.1)
+
+### A3 — Hamburger e close → `<button>` semantici
+- `src/components/Navigation.jsx` — `motion.div` → `motion.button` per hamburger con `aria-label="Apri menu"`, `aria-expanded`, `aria-controls="fullscreen-nav"`, `ref` per gestione focus
+- `motion.div` close → `motion.button` con `aria-label="Chiudi menu"`
+- `src/styles/Navigation.css` — button reset (padding, border, font); `transition: all` → proprietà specifiche
+
+### A4 — Label visually-hidden per tutti i campi form
+- `src/components/Contact.jsx` — aggiunto `<label htmlFor>` per name, email, data_evento, message
+- `src/components/ServicesGallery.jsx` — aggiunto `<label htmlFor>` per name, email, message
+
+### A5 — Form feedback accessibile
+- `src/components/Contact.jsx` — `role="alert" aria-live="polite"` su messaggi success/error
+- `src/components/ServicesGallery.jsx` — stesso fix
+
+### A6 — Section headings semantici (h2)
+- `src/components/Services.jsx` — `motion.div` → `motion.h2` per heading "Tecnica"
+- `src/components/Blog.jsx` — aggiunto `<h2 className="blog-heading-text">` con span colore interno
+- `src/components/Contact.jsx` — `motion.div` → `motion.h2` per heading "Contattaci"
+- `src/styles/Blog.css` — selettore `.blog-header span` → `.blog-header .blog-heading-text`
+
+### A7 — Valori statistici: `<motion.h2>` → `<motion.p className="stat-value">`
+- `src/components/Services.jsx` — "1800 m²", "Dal 2013", "180.000W", "200+ eventi" non sono heading
+- `src/styles/Services.css` — selettore `.service-description h2` → `.stat-value`
+
+### A8 — AnimatePresence per Loader
+- `src/pages/_app.jsx` — `{isLoading && <Loader />}` wrappato in `<AnimatePresence mode="wait">` con `key="loader"`
+- Impatto: exit animation `opacity: 0` del Loader ora eseguita correttamente
+
+### A9 — `useLayoutEffect` → `useEffect`
+- `src/components/BlogPost.jsx` — rimosso SSR warning
+- `src/components/ServicePage.jsx` — rimosso SSR warning
+
+### A10 — Video poster rimosso
+- `src/components/Header.jsx` — rimosso attributo `poster` (thumbnail.webp non esiste in public/images/)
+- Impatto: elimina 404 silenzioso sull'asset poster
+
+### A11 — Video decorativo accessibile
+- `src/components/Header.jsx` — aggiunto `aria-hidden="true" role="presentation"` al `<video>`
+
+### B4 (anticipato) — Focus trap + Escape nel menu mobile
+- `src/components/Navigation.jsx` — Escape key chiude menu e riporta focus all'hamburger
+- Focus spostato al primo elemento del menu all'apertura; focus trap con Tab/Shift+Tab
+- `id="fullscreen-nav"` aggiunto al div del menu; `role="dialog" aria-modal="true"`
+
+---
+
 ## Update 2026-06-02 — Hydration, Animazioni Composite, Semantica
 
 ### FIX 1 — Elemento <main> semantico

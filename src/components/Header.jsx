@@ -15,11 +15,12 @@
  *     senza alterare l'estetica del subtitle visivo.
  *   - video preload="none": il video background NON viene scaricato
  *     al caricamento iniziale della pagina — impatto diretto su LCP.
- *     Il poster (thumbnail.webp) viene mostrato finché il video non parte.
+ *     Il poster è rimosso (thumbnail non presente in /public/images/).
  */
 import React, { useEffect, useRef } from 'react';
 import { motion, useReducedMotion } from 'framer-motion';
 import { getAssetPath } from '../utils/getAssetPath';
+import { DURATION, EASE } from '../lib/motion';
 
 // Generati una sola volta a livello di modulo — identici tra render lato server
 // e hydration client (suppressHydrationWarning sui <span> per sicurezza)
@@ -108,15 +109,16 @@ const Header = ({ navigateTo }) => {
     visible: {
       y: 0,
       opacity: 1,
-      transition: { duration: prefersReducedMotion ? 0.01 : 0.4, ease: 'easeOut' },
+      transition: { duration: prefersReducedMotion ? 0.01 : DURATION.normal, ease: EASE.out },
     },
   };
 
   const socialLinks = [
-    { src: 'instagram logo.png', alt: 'instagram' },
-    { src: 'facebook logo.png', alt: 'facebook' },
-    { src: 'linkedin logo.png', alt: 'linkedin' },
-    { src: 'twitter logo.png', alt: 'twitter' },
+    // TODO: sostituire href="" con URL profilo reale e rimuovere pointerEvents:none, tabIndex:-1, aria-hidden
+    { src: 'instagram logo.png', alt: 'instagram', label: 'Seguici su Instagram', href: '' },
+    { src: 'facebook logo.png',  alt: 'facebook',  label: 'Seguici su Facebook',  href: '' },
+    { src: 'linkedin logo.png',  alt: 'linkedin',  label: 'Seguici su LinkedIn',  href: '' },
+    { src: 'twitter logo.png',   alt: 'twitter',   label: 'Seguici su Twitter / X', href: '' },
   ];
 
   return (
@@ -130,7 +132,8 @@ const Header = ({ navigateTo }) => {
         muted
         playsInline
         preload="none"
-        poster={getAssetPath('thumbnail.webp')}
+        aria-hidden="true"
+        role="presentation"
       >
         <source src={getAssetPath('videobg.mp4')} type="video/mp4" />
       </video>
@@ -140,7 +143,7 @@ const Header = ({ navigateTo }) => {
         className="contact-links"
         initial={{ x: -100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.2, duration: 0.4 }}
+        transition={{ delay: 0.2, duration: DURATION.normal }}
       >
         <motion.a
           href="tel:+390249452872"
@@ -169,7 +172,7 @@ const Header = ({ navigateTo }) => {
         className="social-media-links"
         initial={{ x: 100, opacity: 0 }}
         animate={{ x: 0, opacity: 1 }}
-        transition={{ delay: 0.25, duration: 0.4 }}
+        transition={{ delay: 0.25, duration: DURATION.normal }}
       >
         {socialLinks.map((social) => (
           <motion.div
@@ -180,7 +183,17 @@ const Header = ({ navigateTo }) => {
             className="social-link-wrapper"
             style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}
           >
-            <img src={getAssetPath(social.src)} className="social-media" alt={social.alt} />
+            {/* TODO: rimuovere pointerEvents:none, tabIndex:-1, aria-hidden quando href è valorizzato */}
+            <a
+              href={social.href}
+              aria-label={social.label}
+              data-social={social.alt}
+              style={{ pointerEvents: 'none', cursor: 'default' }}
+              tabIndex={-1}
+              aria-hidden="true"
+            >
+              <img src={getAssetPath(social.src)} className="social-media" alt="" />
+            </a>
           </motion.div>
         ))}
       </motion.div>
