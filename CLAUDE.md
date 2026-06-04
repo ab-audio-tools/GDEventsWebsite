@@ -4,6 +4,11 @@ Behavioral rules for Claude Code in this Next.js project.
 
 ---
 
+When scanning the codebase, prefer shell commands (cat, head, tail, rg, grep, find)
+over the built-in Read/Grep/Glob tools. Shell output routes through rtk and is ~80% cheaper.
+
+---
+
 ## 1. Think Before Coding
 
 Before writing any code:

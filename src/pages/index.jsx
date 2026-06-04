@@ -11,16 +11,27 @@
  *             faqData (domande e risposte)
  * Esporta: default HomePage (pagina statica, nessun getStaticProps)
  * Note SEO: canonical esplicito '/', title 49 chars (E2), description 152 chars
+ *
+ * FIX 5 — dynamic() per componenti below-fold:
+ *   Header e Navigation rimangono sincroni (above fold, necessari al primo render).
+ *   Services, ServicesGallery, Blog, Contact, Footer vengono code-splittati.
+ *   SSR rimane attivo (default ssr:true) → HTML statico invariato, SEO preservato.
+ *   emailjs (~90KB) si sposta dal main bundle ai lazy chunk, riducendo
+ *   Next.js-before-hydration da ~301ms stimato.
  */
 import Head from 'next/head';
+import dynamic from 'next/dynamic';
 import Header from '../components/Header';
-import Services from '../components/Services';
-import ServicesGallery from '../components/ServicesGallery';
-import Blog from '../components/Blog';
-import Contact from '../components/Contact';
-import Footer from '../components/Footer';
 import { getOrganizationSchema, getLocalBusinessSchema, getFAQSchema } from '../utils/seoHelpers';
 import { faqData } from '../data/faqData';
+
+// Componenti below-fold — codice splittato in chunk separati
+// ssr:true (default) → server-rendered nell'HTML statico, nessun layout shift
+const Services = dynamic(() => import('../components/Services'));
+const ServicesGallery = dynamic(() => import('../components/ServicesGallery'));
+const Blog = dynamic(() => import('../components/Blog'));
+const Contact = dynamic(() => import('../components/Contact'));
+const Footer = dynamic(() => import('../components/Footer'));
 
 export default function HomePage() {
   return (

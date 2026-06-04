@@ -5,6 +5,31 @@
 
 ---
 
+## Update 2026-06-04 — Fix 1-5: Hydration, ARIA, CSS composite, bundle
+
+### FIX 1 — React hydration errors (#418 #423 #425)
+- `src/components/Blog.jsx` — rimosso `toLocaleDateString('it-IT')` (causa principale: output diverso tra Node.js minimal-ICU e browser); sostituito con `formatDateIT()` deterministico che usa `getUTC*` e nomi mesi hardcoded italiani → output identico su qualsiasi ambiente
+- `src/components/Header.jsx` — `NEON_DELAYS` da `Array.from({length:8}, () => Math.random()*1.5)` a valori fissi `[0.0, 1.2, 0.4, 2.1, 0.8, 1.6, 0.2, 1.0]`; elimina il mismatch alla fonte invece di sopprimere il warning
+
+### FIX 2 — ARIA: role="presentation" invalido su video
+- `src/components/Header.jsx` — rimosso `role="presentation"` dal `<video>` background; `aria-hidden="true"` è sufficiente e semanticamente corretto secondo le specifiche ARIA (role="presentation" non è un ruolo valido per l'elemento video)
+
+### FIX 3 — Animazioni neon composite
+- `src/styles/Header.css` — `@keyframes flicker` riscritto: rimossi tutti gli `filter: drop-shadow()` animati (non-composite → causa repaint ad ogni frame); animazione ora usa solo `opacity` (0.15 ↔ 1) e `transform: translateZ(0)` (entrambi GPU path)
+- `src/styles/Header.css` — `.neon-letter`: rimosso `filter: drop-shadow()` come prop base; aggiunto `text-shadow` statico (identico visivo, non-animated → nessun repaint); aggiunti `will-change: opacity, transform` e `contain: layout style paint`
+- `src/styles/Services.css` — nessuna modifica: `@keyframes pulse-glow` usava già solo `opacity` + `transform`; `filter` su `.lightbulb-glow` è statico (non animato)
+
+### FIX 4 — CSS blocking render (analisi)
+- Nessuna modifica al codice — il chunk `0828mu7ahudjc.css` è generato automaticamente da Next.js e non controllabile da `_document.jsx`; il blocking time di 150ms è network latency simulata da Lighthouse 3G, non tempo di parsing (7.7KB = ~2KB gzip = <1ms di parsing)
+- L'unica opzione sicura sarebbe `experimental.optimizeCss` in `next.config.js` (vietato) o CSS inline manuale (non mantenibile)
+
+### FIX 5 — Bundle size e hydration timing
+- `src/pages/index.jsx` — converite da import statici a `dynamic()` le 5 sezioni below-fold: `Services`, `ServicesGallery`, `Blog`, `Contact`, `Footer`; SSR mantenuto (default `ssr:true`) → HTML statico invariato, SEO preservato, nessun layout shift
+- `emailjs` (~90KB) si sposta dal main bundle ai lazy chunk, riducendo `Next.js-before-hydration` atteso da ~301ms
+- Chunk lazy risultanti: `0nh0ixdtp0l7k.js` / `0crf2qiexa~8d.js` (~108KB ciascuno) scaricati in parallelo dopo il first paint
+
+---
+
 ## Update 2026-06-04 — Audit Full: GRUPPO E — SEO micro-ottimizzazioni
 
 ### E1 — Service schema con immagine

@@ -5,6 +5,14 @@ import { useRouter } from 'next/router';
 import { getBlogArticles } from '../data/blogData';
 import { DURATION, EASE } from '../lib/motion';
 
+// Formatter deterministico — produce output identico su Node.js e browser
+// evitando toLocaleDateString() che può differire per dati ICU (hydration mismatch)
+const MONTHS_IT = ['gen', 'feb', 'mar', 'apr', 'mag', 'giu', 'lug', 'ago', 'set', 'ott', 'nov', 'dic'];
+function formatDateIT(dateStr) {
+  const d = new Date(dateStr);
+  return `${d.getUTCDate()} ${MONTHS_IT[d.getUTCMonth()]} ${d.getUTCFullYear()}`;
+}
+
 const Blog = () => {
   const router = useRouter();
   const prefersReducedMotion = useReducedMotion();
@@ -60,13 +68,7 @@ const Blog = () => {
           >
             <div className="blog-card-meta">
               <span>{post.tag}</span>
-              <span>
-                {new Date(post.date).toLocaleDateString('it-IT', {
-                  day: 'numeric',
-                  month: 'short',
-                  year: 'numeric',
-                })}
-              </span>
+              <span>{formatDateIT(post.date)}</span>
             </div>
             <h3>{post.title}</h3>
             <p>{post.excerpt}</p>

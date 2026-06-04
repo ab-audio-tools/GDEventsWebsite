@@ -22,9 +22,10 @@ import { motion, useReducedMotion } from 'framer-motion';
 import { getAssetPath } from '../utils/getAssetPath';
 import { DURATION, EASE } from '../lib/motion';
 
-// Generati una sola volta a livello di modulo — identici tra render lato server
-// e hydration client (suppressHydrationWarning sui <span> per sicurezza)
-const NEON_DELAYS = Array.from({ length: 8 }, () => Math.random() * 1.5);
+// Valori deterministici — identici su server (SSG) e client (hydration)
+// Math.random() a livello di modulo produce valori diversi ad ogni evaluazione
+// causando hydration mismatch nonostante suppressHydrationWarning
+const NEON_DELAYS = [0.0, 1.2, 0.4, 2.1, 0.8, 1.6, 0.2, 1.0];
 
 const Header = ({ navigateTo }) => {
   const videoRef = useRef(null);
@@ -133,7 +134,6 @@ const Header = ({ navigateTo }) => {
         playsInline
         preload="none"
         aria-hidden="true"
-        role="presentation"
       >
         <source src={getAssetPath('videobg.mp4')} type="video/mp4" />
       </video>

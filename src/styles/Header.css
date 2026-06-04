@@ -113,23 +113,27 @@
 .neon-letter {
   display: inline-block;
   color: #00d4ff;
-  filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.8))
-          drop-shadow(0 0 20px rgba(0, 212, 255, 0.6))
-          drop-shadow(0 0 40px rgba(0, 212, 255, 0.4));
+  /* text-shadow STATICO — non causa repaint continuo (solo l'animazione di text-shadow lo causa) */
+  text-shadow:
+    0 0 10px rgba(0, 212, 255, 0.8),
+    0 0 20px rgba(0, 212, 255, 0.6),
+    0 0 40px rgba(0, 212, 255, 0.4);
   animation: flicker 3s infinite alternate;
+  /* FIX 3: solo opacity + transform → GPU path, zero repaint */
+  will-change: opacity, transform;
+  contain: layout style paint;
 }
 
+/* FIX 3: @keyframes usa solo opacity + transform (proprietà composite)
+   filter animato causava repaint ad ogni frame — ora eliminato */
 @keyframes flicker {
-  0%, 19.999%, 22%, 62.999%, 64%, 64.999%,
-  70%, 100% {
-    filter: drop-shadow(0 0 10px rgba(0,212,255,0.8))
-            drop-shadow(0 0 20px rgba(0,212,255,0.6))
-            drop-shadow(0 0 40px rgba(0,212,255,0.4));
+  0%, 19%, 21%, 23%, 25%, 54%, 56%, 100% {
     opacity: 1;
+    transform: translateZ(0);
   }
-  20%, 21.999%, 63%, 63.999%, 65%, 69.999% {
-    filter: none;
-    opacity: 0.8;
+  20%, 24%, 55% {
+    opacity: 0.15;
+    transform: translateZ(0);
   }
 }
 
