@@ -33,11 +33,15 @@ const Header = ({ navigateTo }) => {
 
   useEffect(() => {
     const headerElement = document.getElementById('header');
-    let rafId = null;
     let isMouseInHeader = false;
     // Legge rect una sola volta e la aggiorna solo al resize
     // evita getBoundingClientRect() in ogni mousemove (forced reflow)
     let cachedRect = null;
+    // FIX 2: rafPending coalesce tutti gli eventi mousemove in un singolo frame
+    // eliminando il pattern cancel-reschedule (un RAF per ogni evento)
+    let rafPending = false;
+    let lastMouseX = 0;
+    let lastMouseY = 0;
 
     const updateRect = () => {
       if (headerElement) cachedRect = headerElement.getBoundingClientRect();
@@ -52,7 +56,7 @@ const Header = ({ navigateTo }) => {
 
     const handleMouseLeave = () => {
       isMouseInHeader = false;
-      if (rafId) { cancelAnimationFrame(rafId); rafId = null; }
+      rafPending = false;
       // Reset parallasse al mouse leave
       if (videoRef.current) {
         videoRef.current.style.setProperty('--video-offset-x', '0px');
@@ -62,19 +66,24 @@ const Header = ({ navigateTo }) => {
 
     const handleMouseMove = (e) => {
       if (!isMouseInHeader) return;
-      if (rafId) cancelAnimationFrame(rafId);
-      rafId = window.requestAnimationFrame(() => {
-        if (!isMouseInHeader || !cachedRect || !videoRef.current) return;
-        const mouseX = e.clientX - cachedRect.left;
-        const mouseY = e.clientY - cachedRect.top;
-        // Normalizza le coordinate (-1 a 1)
-        const xPercent = (mouseX / cachedRect.width - 0.5) * 2;
-        const yPercent = (mouseY / cachedRect.height - 0.5) * 2;
-        // Applica parallasse (max 30px di movimento)
-        videoRef.current.style.setProperty('--video-offset-x', `${xPercent * 30}px`);
-        videoRef.current.style.setProperty('--video-offset-y', `${yPercent * 30}px`);
-        rafId = null;
-      });
+      // Salva le coordinate (lettura dell'evento fuori dal RAF)
+      lastMouseX = e.clientX;
+      lastMouseY = e.clientY;
+      if (!rafPending) {
+        rafPending = true;
+        window.requestAnimationFrame(() => {
+          rafPending = false;
+          if (!isMouseInHeader || !cachedRect || !videoRef.current) return;
+          const mouseX = lastMouseX - cachedRect.left;
+          const mouseY = lastMouseY - cachedRect.top;
+          // Normalizza le coordinate (-1 a 1)
+          const xPercent = (mouseX / cachedRect.width - 0.5) * 2;
+          const yPercent = (mouseY / cachedRect.height - 0.5) * 2;
+          // Applica parallasse (max 30px di movimento)
+          videoRef.current.style.setProperty('--video-offset-x', `${xPercent * 30}px`);
+          videoRef.current.style.setProperty('--video-offset-y', `${yPercent * 30}px`);
+        });
+      }
     };
 
     if (headerElement) {
@@ -84,7 +93,6 @@ const Header = ({ navigateTo }) => {
     document.addEventListener('mousemove', handleMouseMove, { passive: true });
 
     return () => {
-      if (rafId) cancelAnimationFrame(rafId);
       if (headerElement) {
         headerElement.removeEventListener('mouseenter', handleMouseEnter);
         headerElement.removeEventListener('mouseleave', handleMouseLeave);
@@ -199,10 +207,13 @@ const Header = ({ navigateTo }) => {
       </motion.div>
 
       {/* Header Content - Centered */}
+      {/* FIX 1 LCP: initial={false} → SSG HTML parte già a opacity:1
+          Framer Motion non inietta opacity:0 inline durante SSR,
+          quindi Lighthouse vede il titolo visibile al primo render */}
       <motion.div
         className="header-content"
         variants={containerVariants}
-        initial="hidden"
+        initial={false}
         animate="visible"
       >
         <div className="header-content-box">
