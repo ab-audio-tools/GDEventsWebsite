@@ -46,6 +46,9 @@ const ServicesGallery = () => {
     },
     {
       img: getAssetPath('/illum_arch.webp'),
+      // srcset: mobile 400w (37KB) vs desktop 800w (116KB) — risparmia ~84KB su viewport ≤768px
+      srcSet: `${getAssetPath('/illum_arch-mobile.webp')} 400w, ${getAssetPath('/illum_arch.webp')} 800w`,
+      sizes: '(max-width: 768px) 400px, 800px',
       title: 'Illuminazione Architetturale',
       description: 'Valorizzazione di edifici storici e monumenti con illuminazione LED dinamica RGB',
       slug: 'illuminazione-architetturale',
@@ -359,6 +362,8 @@ const ServicesGallery = () => {
               >
                 <motion.img
                   src={item.img}
+                  srcSet={item.srcSet}
+                  sizes={item.sizes}
                   alt={item.title}
                   animate={{
                     scale: hoveredIndex === index ? 1 : 1.15,
@@ -407,6 +412,8 @@ const ServicesGallery = () => {
               >
                 <motion.img
                   src={item.img}
+                  srcSet={item.srcSet}
+                  sizes={item.sizes}
                   alt={item.title}
                   animate={{
                     scale: hoveredIndex === index + 5 ? 1 : 1.15,

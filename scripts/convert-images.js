@@ -6,8 +6,11 @@ const inputDir = path.join(__dirname, '../public/images');
 const outputDir = path.join(__dirname, '../public/images');
 
 // Dimensioni target per ogni immagine (larghezza massima visualizzata)
+// suffix: aggiunge un suffisso al nome output (es. '-mobile' → illum_arch-mobile.webp)
 const imageSizes = {
   'illum_arch.jpeg':       { width: 800, quality: 82 },
+  // Variante mobile per srcset — genera illum_arch-mobile.webp da illum_arch.webp
+  'illum_arch.webp':       { width: 400, quality: 82, suffix: '-mobile' },
   'produzione_eventi.jpeg':{ width: 700, quality: 82 },
   'stand_fiera.jpeg':      { width: 700, quality: 82 },
   'convention.jpeg':       { width: 700, quality: 82 },
@@ -27,14 +30,15 @@ async function convertImages() {
     }
     const ext = path.extname(filename);
     const base = path.basename(filename, ext);
-    const outputPath = path.join(outputDir, `${base}.webp`);
+    const suffix = opts.suffix || '';
+    const outputPath = path.join(outputDir, `${base}${suffix}.webp`);
     await sharp(inputPath)
       .resize({ width: opts.width, withoutEnlargement: true })
       .webp({ quality: opts.quality })
       .toFile(outputPath);
     const before = fs.statSync(inputPath).size;
     const after = fs.statSync(outputPath).size;
-    console.log(`${filename} → ${base}.webp | ${Math.round(before/1024)}KB → ${Math.round(after/1024)}KB`);
+    console.log(`${filename} → ${base}${suffix}.webp | ${Math.round(before/1024)}KB → ${Math.round(after/1024)}KB`);
   }
 }
 
