@@ -55,7 +55,21 @@
   RewriteCond %{HTTP_HOST} !^www\. [NC]
   RewriteRule ^(.*)$ https://www.%{HTTP_HOST}%{REQUEST_URI} [L,R=301]
 
-  # ── 3. SPA fallback ────────────────────────────────────────────────────────
+  # ── 3. 410 Gone — WordPress path scanning ──────────────────────────────────
+  # Bot e crawler cercano path WordPress su siti che non usano WordPress.
+  # 410 Gone (anziché 404) accelera la de-indexazione: segnala a Google
+  # che la risorsa non esiste e non esisterà mai → rimossa più rapidamente.
+  # Posizione: prima del SPA fallback, che altrimenti risponderebbe 200.
+  RewriteRule ^(wp-admin|wp-login\.php|wp-content|wp-includes)(/.*)?$ - [R=410,L]
+
+  # ── 4. 410 Gone — WordPress query string scanning ──────────────────────────
+  # Query string tipiche di URL WordPress generati da temi, plugin e crawler
+  # (page_id, feed, p, cat, tag). Stessa logica del punto 3.
+  # [NC] = case-insensitive; corrisponde a ?Page_Id= ecc.
+  RewriteCond %{QUERY_STRING} (^|&)(page_id|feed|p|cat|tag)= [NC]
+  RewriteRule ^ - [R=410,L]
+
+  # ── 5. SPA fallback ────────────────────────────────────────────────────────
   # Serve /index.html per qualsiasi URL che non corrisponde a un file
   # o directory esistente — Next.js gestisce il routing lato client.
   # index.html stesso è escluso dal redirect per evitare loop infiniti.
