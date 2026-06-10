@@ -298,14 +298,19 @@
     display: none;
   }
 
-  /* Posiziona contact links in fondo alla viewport dell'hero su mobile */
+  /* Posiziona contact links in fondo all'hero su mobile, centrate orizzontalmente.
+     NON usare left:50% + translateX(-50%): Framer Motion applica translateX(0px)
+     inline al termine dell'animazione x:-100→0, sovrascrivendo il CSS transform.
+     Soluzione: width:100% + justify-content:center — FM non tocca queste proprietà. */
   .contact-links {
     position: absolute;
-    bottom: 30px;
-    transform: translateX(-50%);
+    bottom: 24px;
+    left: 0;
+    width: 100%;
     display: flex;
     flex-direction: row;
-    gap: 35px;
+    justify-content: center;
+    gap: 32px;
     z-index: 20;
   }
 
@@ -356,11 +361,12 @@
     padding: 0 16px;
   }
 
-  /* Contact links centrate sotto al CTA su telefono */
+  /* Contact links centrate sotto al CTA su telefono — stessa correzione 768px */
   .contact-links {
     position: absolute;
     bottom: 10vh;
-    transform: translateX(-50%);
+    left: 0;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: center;

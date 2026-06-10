@@ -151,7 +151,7 @@
 }
 
 /* Fullscreen Navigation */
-#navigation-content {
+#fullscreen-nav {
   position: fixed;
   top: 0;
   left: 0;
@@ -243,13 +243,17 @@
   width: 100%;
 }
 
-/* Social icons in fullscreen navigation */
+/* Social icons in fullscreen navigation — centrate orizzontalmente sotto le voci.
+   left: 0 + width: 100% + justify-content: center → allineate al centro pagina */
 .navigation-social {
   position: absolute;
   bottom: 120px;
+  left: 0;
+  width: 100%;
   display: flex;
-  gap: 25px;
+  justify-content: center;
   align-items: center;
+  gap: 24px;
 }
 
 .navigation-social a {
